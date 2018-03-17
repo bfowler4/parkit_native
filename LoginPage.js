@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, View, Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 export default class LoginPage extends Component {
@@ -7,23 +7,24 @@ export default class LoginPage extends Component {
     super(props);
 
     this.state = {
-      text: ``
+      email: ``,
+      password: ``
     }
   }
+
+  handleChange(event) {
+    console.log(event);
+  }
+
+
   
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => Alert.alert(`Logged in!`)}>
-          <Text>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => Alert.alert(`Registered!`)}>
-          <Text>Register</Text>
-        </TouchableOpacity>
+        <TextInput 
+          placeholder='Email'
+          onChange= {this.handleChange}/>
+        <TextInput placeholder='Password' />
       </View>
     );
   }
