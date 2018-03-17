@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert } from 'react-native';
 
+import { login } from '../../actions/authentication';
+
 class LoginPage extends Component {
   constructor(props) {
     super(props);
@@ -11,17 +13,33 @@ class LoginPage extends Component {
       password: ``
     }
   }
+
+  handleSubmit() {
+    const {
+      email,
+      password
+    } = this.state;
+    this.props.login(email, password);
+  }
   
   render() {
     return (
       <View style={styles.container}>
         <TextInput 
           placeholder='Email'
+          autoCorrect={false}
+          autoCapitalize={'none'}
           onChangeText={(email) => this.setState({ email })}/>
         <TextInput 
           placeholder='Password' 
+          autoCorrect={false}
+          secureTextEntry={true}
           onChangeText={(password) => this.setState({ password })}/>
-        <Text>{this.props.test}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.handleSubmit.bind(this)}>
+          <Text>Login</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -32,8 +50,17 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email, password) => {
+      dispatch(login(email, password));
+    }
+  }
+}
+
 export default ConnectedLoginPage = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(LoginPage);
 
 const styles = StyleSheet.create({

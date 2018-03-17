@@ -1,6 +1,6 @@
 import { AppNavigator } from '../containers/NavigationApp';
 
-// Start with two routes: The Main screen, with the Login screen on top.
+// Set initial state to home
 const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 const initialNavState = AppNavigator.router.getStateForAction(firstAction);
 

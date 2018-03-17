@@ -4,12 +4,15 @@ import { createStore, applyMiddleware } from 'redux';
 
 import AppReducer from './reducers';
 import AppWithNavigationState from './containers/NavigationApp';
-import { middleware } from './utilities/redux';
+import { middleware, thunk } from './utilities/redux';
+
 
 const store = createStore(
   AppReducer,
-  applyMiddleware(middleware),
+  applyMiddleware(middleware, thunk),
 );
+
+console.log(store);
 
 class ReduxExampleApp extends React.Component {
   render() {
