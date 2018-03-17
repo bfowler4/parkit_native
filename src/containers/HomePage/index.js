@@ -1,30 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, TextInput, View, Alert } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default class LoginPage extends Component {
+
+class HomePage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: ``,
-      password: ``
+      text: ``
     }
   }
-
-  handleChange(event) {
-    console.log(event);
-  }
-
-
   
   render() {
     return (
       <View style={styles.container}>
-        <TextInput 
-          placeholder='Email'
-          onChange= {this.handleChange}/>
-        <TextInput placeholder='Password' />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.navigation.navigate(`Login`)}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => Alert.alert(`Registered!`)}>
+          <Text>Register</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -50,3 +49,5 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
+
+export default HomePage;
