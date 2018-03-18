@@ -1,20 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator } from 'react-navigation';
+import { addNavigationHelpers, StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 
 import { addListener } from '../../utilities/redux';
 
-export const AppNavigator = StackNavigator({
+export const AppNavigator = DrawerNavigator({
   Home: {
-    screen: HomePage
+    screen: HomePage,
   },
   Login: {
-    screen: LoginPage
+    screen: LoginPage,
   }
 });
+
 
 class AppWithNavigationState extends React.Component {
   render() {

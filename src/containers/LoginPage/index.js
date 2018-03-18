@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert } from 'react-native';
 
+import { Icon, Button, Header, Container, Content, Left } from 'native-base';
+
 import { login } from '../../actions/authentication';
 
 class LoginPage extends Component {
@@ -24,6 +26,20 @@ class LoginPage extends Component {
   
   render() {
     return (
+      <Container>
+        <Header>
+          <Left>
+            <Icon name="ios-menu" onPress={() => this.props.navigation.navigate('DrawerOpen')} />
+            </Left>
+        </Header>
+        <Content contentContainerStyle={{
+          flex:1,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Text>
+            Login
+            </Text>
       <View style={styles.container}>
         <TextInput 
           placeholder='Email'
@@ -41,6 +57,8 @@ class LoginPage extends Component {
           <Text>Login</Text>
         </TouchableOpacity>
       </View>
+          </Content>
+        </Container>
     );
   }
 }

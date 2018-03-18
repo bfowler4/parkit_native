@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { Icon, Button, Header, Container, Content, Left } from 'native-base';
 
 class HomePage extends Component {
   constructor(props) {
@@ -13,6 +14,20 @@ class HomePage extends Component {
   
   render() {
     return (
+      <Container>
+        <Header>
+          <Left>
+            <Icon name="ios-menu" onPress={() => this.props.navigation.navigate('DrawerOpen')} />
+            </Left>
+          </Header>
+          <Content contentContainerStyle={{
+            flex:1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          <Text>
+            Home
+            </Text>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
@@ -25,6 +40,8 @@ class HomePage extends Component {
           <Text>Register</Text>
         </TouchableOpacity>
       </View>
+          </Content>
+      </Container>
     );
   }
 }
