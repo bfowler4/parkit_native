@@ -12,8 +12,6 @@ const store = createStore(
   applyMiddleware(middleware, thunk),
 );
 
-console.log(store);
-
 class ReduxExampleApp extends React.Component {
   render() {
     return (
