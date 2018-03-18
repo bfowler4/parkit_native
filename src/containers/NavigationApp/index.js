@@ -4,6 +4,8 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
+import Protected from '../../components/protected';
+import RolePick from '../RolePickPage';
 
 import { addListener } from '../../utilities/redux';
 
@@ -13,6 +15,12 @@ export const AppNavigator = StackNavigator({
   },
   Login: {
     screen: LoginPage
+  },
+  RolePick: {
+    screen: RolePick 
+  },
+  Protected: {
+    screen: Protected
   }
 });
 

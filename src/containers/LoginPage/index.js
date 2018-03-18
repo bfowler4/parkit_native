@@ -65,9 +65,6 @@ const mapDispatchToProps = dispatch => {
   return {
     login: (email, password) => {
       dispatch(login(email, password));
-    },
-    loadUser: id => {
-      dispatch(loadUser(id));
     }
   }
 }

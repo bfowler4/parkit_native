@@ -1,7 +1,7 @@
 import { AppNavigator } from '../containers/NavigationApp';
 
 // Set initial state to home
-const firstAction = AppNavigator.router.getActionForPathAndParams('Login');
+const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
 const initialNavState = AppNavigator.router.getStateForAction(firstAction);
 
 function nav(state = initialNavState, action) {
