@@ -4,7 +4,7 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
-
+import HomePark from '../ParkHomePage';
 import { addListener } from '../../utilities/redux';
 
 export const AppNavigator = StackNavigator({
@@ -13,6 +13,9 @@ export const AppNavigator = StackNavigator({
   },
   Login: {
     screen: LoginPage
+  },
+  HomePark:{
+    screen:HomePark
   }
 });
 

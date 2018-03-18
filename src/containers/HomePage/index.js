@@ -24,6 +24,11 @@ class HomePage extends Component {
           onPress={() => Alert.alert(`Registered!`)}>
           <Text>Register</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.navigation.navigate(`HomePark`)}>
+          <Text>Map</Text>
+        </TouchableOpacity>
       </View>
     );
   }
