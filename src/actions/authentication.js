@@ -5,26 +5,70 @@ import { NavigationActions } from 'react-navigation';
 
 const HOST = `http://5c5ff349.ngrok.io/api`;
 
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
 export const SET_USER = `SET_USER`;
 export const SET_TOKEN = `SET_TOKEN`;
 
-export const login = (email, password) => {
+export const register = (name, email, password) => {
+  name = name.split(` `);
+  const first_name = name[0];
+  const last_name = name[1] || ``;
   return dispatch => {
-    Axios.post(`${HOST}/login`, { email, password })
+    Axios.post(`${HOST}/register`, { first_name, last_name, email, password })
     .then(user => {
+      dispatch({
+        type: SET_USER,
+        user: user.data.user
+      });
       const token = user.data.token;
       AsyncStorage.setItem(`token`, token)
       .then(() => {
         const redirect = NavigationActions.navigate({
-          routeName: `Protected`
+          routeName: `App`
         });
         dispatch(redirect);
       });
     })
     .catch(err => {
       console.log(err.message);
+    });
+  }
+}
+
+export const login = (email, password) => {
+  return dispatch => {
+    Axios.post(`${HOST}/login`, { email, password })
+    .then(user => {
+      dispatch({
+        type: SET_USER,
+        user: user.data
+      });
+      const token = user.data.token;
+      AsyncStorage.setItem(`token`, token)
+      .then(() => {
+        const redirect = NavigationActions.navigate({
+          routeName: `App`
+        });
+        dispatch(redirect);
+      });
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
+  }
+}
+
+export const logout = () => {
+  return dispatch => {
+    dispatch({
+      type: SET_USER,
+      user: null
+    });
+    AsyncStorage.removeItem(`token`)
+    .then(() => {
+      const redirect = NavigationActions.navigate({
+        routeName: `Auth`
+      });
+      dispatch(redirect);
     });
   }
 }
