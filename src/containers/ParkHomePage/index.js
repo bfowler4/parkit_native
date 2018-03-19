@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert } from 'react-native';
-import { MapView } from 'expo';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert, Platform} from 'react-native';
+import { MapView,Constants, Location, Permissions } from 'expo';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {spaceRequest} from '../../actions/parkAction';
+import { customercoors } from '../../actions/parkAction';
 import Dimensions from 'Dimensions';
 
 
@@ -17,26 +19,53 @@ class HomePark extends Component {
       key: ``,
       targLat:21.2969,
       targLng:-157.8171,
-      cuslat:'',
-      cuslng:''
+      location:null,
+      err:null
       
     };
   }
+  componentWillMount() {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      this.setState({
+        errorMessage: 'Not Compadible With Androids Or None Modile Devices!',
+      });
+    } else {
+      this._getLocationAsync();
+    }
+  }
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+    this.props.customercoors(location)
+  };
 
   onRegionChange(region) {
     this.setState({targLat:region.latitude,targLng:region.longitude})
   }
   handleSubmit(){
-    console.log(this.state.targLat)
-    console.log(this.state.targLng)
+    
+   this.props.spaceRequest(this.state.targLat,this.state.targLng)
+
+    this.state.location?this.props.customercoors(this.state.location.coords):console.log('no location');
+
+    this.props.navigation.navigate('ReqPark');
   }
 
   
   render() {
-    
+
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
-   
+ 
+    
 
     return (
       
@@ -138,7 +167,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    
+    spaceRequest: (lat,lng) => {
+      dispatch(spaceRequest(lat,lng))} ,
+    customercoors: (location) => {
+        dispatch(customercoors(location))
+      
+    }
   }
 }
 
