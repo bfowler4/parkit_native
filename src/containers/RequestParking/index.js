@@ -9,14 +9,16 @@ class ReqPark extends Component {
   constructor(props){
     super(props);
     this.state = {
+     
 
     }
   }
   componentWillMount(){
-
+    
   }
   render(){
-    console.log(this.props.space)
+    // console.log('space', this.props.space.longitude)
+    console.log('customer', this.props.customer.longitude)
     
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
@@ -41,8 +43,10 @@ class ReqPark extends Component {
 
 
 const mapStateToProps = state => {
+  
   return {
-    space:state.park.space
+    space:state.park.space,
+    customer:state.park.customerCoors
   }
 }
 

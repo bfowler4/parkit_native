@@ -70,7 +70,8 @@ class HomePark extends Component {
     return (
       
         <View style={{flex:1}}>
-          {/* <GooglePlacesAutocomplete
+         <View style={{flex:.35}}>
+          <GooglePlacesAutocomplete
               placeholder='Enter Location'
               minLength={2}
               autoFocus={false}
@@ -111,7 +112,8 @@ class HomePark extends Component {
                 predefinedPlacesDescription: {
                   color: '#1faadb'
                 },
-              }}/> */}
+              }}/>
+          </View>
           <MapView
           style={{ flex: 1 }}
           key={this.state.key}
@@ -132,13 +134,14 @@ class HomePark extends Component {
             description={"description"}
          />
           </MapView>
-          <TouchableOpacity
-          style={styles.button}
-          onPress={this.handleSubmit.bind(this)}
-          >
-          <Text>Submit</Text>
-        </TouchableOpacity>
-          
+          <View style={{flex:0, justifyContent: `center`,alignItems: `center`,backgroundColor:'white'}}>
+            <TouchableOpacity
+            style={styles.button}
+            onPress={this.handleSubmit.bind(this)}
+            >
+            <Text>Submit</Text>
+          </TouchableOpacity>
+          </View>
         </View> 
       
     );
@@ -156,7 +159,8 @@ const styles = StyleSheet.create({
     borderColor: `black`,
     borderWidth: 1,
     borderStyle: `solid`,
-    borderRadius: 5
+    borderRadius: 5,
+    backgroundColor:"grey"
   }
 });
 
