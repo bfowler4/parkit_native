@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Alert, Image } from 'react-native';
 
 import { Icon, Button, Header, Container, Content, Left } from 'native-base';
 
@@ -16,6 +16,12 @@ class LoginPage extends Component {
     }
   }
 
+  static navigationOptions = {
+    drawerIcon: (
+      <Image source={require('../../.././assetts/Login.png')}
+      style={{ height: 24, width: 24 }} />
+    )
+  }
   handleSubmit() {
     const {
       email,

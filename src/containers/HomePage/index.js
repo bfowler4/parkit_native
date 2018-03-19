@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import { Icon, Button, Header, Container, Content, Left } from 'native-base';
 
@@ -11,36 +11,45 @@ class HomePage extends Component {
       text: ``
     }
   }
-  
+
+  static navigationOptions = {
+    drawerIcon: (
+      <Image source={require('../../.././assetts/Home.png')}
+        style={{ height: 24, width: 24 }} />
+    )
+  }
+
   render() {
     return (
       <Container>
-        <Header>
+        <Header style={{ backgroundColor: 'black' }}>
           <Left>
-            <Icon name="ios-menu" onPress={() => this.props.navigation.navigate('DrawerOpen')} />
-            </Left>
-          </Header>
-          <Content contentContainerStyle={{
-            flex:1,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
+            <Icon name="ios-menu" style={{ color: 'white' }} onPress={() => this.props.navigation.navigate('DrawerOpen')} />
+          </Left>
+        </Header>
+        <Content contentContainerStyle={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
           <Text>
             Home
             </Text>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.props.navigation.navigate(`Login`)}>
-          <Text>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => Alert.alert(`Registered!`)}>
-          <Text>Register</Text>
-        </TouchableOpacity>
-      </View>
-          </Content>
+          <Image source={require('../../.././assetts/ParkItLogo8.png')}
+            style={{ height: 760, width: 500 }} />
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate(`Login`)}>
+              <Text>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => Alert.alert(`Registered!`)}>
+              <Text>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </Content>
       </Container>
     );
   }
@@ -58,9 +67,10 @@ const styles = StyleSheet.create({
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
-    margin: 9,
+    margin: 10,
     width: 200,
     borderColor: `black`,
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderStyle: `solid`,
     borderRadius: 5
