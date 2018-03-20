@@ -22,9 +22,9 @@ class HomePage extends Component {
   render() {
     return (
       <Container>
-        <Header style={{ backgroundColor: 'black' }}>
+        <Header style={{ backgroundColor: 'white' }}>
           <Left>
-            <Icon name="ios-menu" style={{ color: 'white' }} onPress={() => this.props.navigation.navigate('DrawerOpen')} />
+            <Icon name="ios-menu" style={{ color: 'black' }} onPress={() => this.props.navigation.navigate('DrawerOpen')} />
           </Left>
         </Header>
         <Content contentContainerStyle={{
@@ -35,7 +35,7 @@ class HomePage extends Component {
           <Text>
             Home
             </Text>
-          <Image source={require('../../.././assetts/ParkItLogo8.png')}
+          <Image source={require('../../.././assetts/ParkItLogo9.png')}
             style={{ height: 760, width: 500 }} />
           <View style={styles.container}>
             <TouchableOpacity
