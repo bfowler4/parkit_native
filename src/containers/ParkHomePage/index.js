@@ -33,6 +33,9 @@ class HomePark extends Component {
       this._getLocationAsync();
     }
   }
+  componentDidUpdate(){
+    this.props.space?this.props.navigation.navigate('ReqPark'):console.log('not ready');
+  }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -55,8 +58,8 @@ class HomePark extends Component {
    this.props.spaceRequest(this.state.targLat,this.state.targLng)
 
     this.state.location?this.props.customercoors(this.state.location.coords):console.log('no location');
-
-    this.props.navigation.navigate('ReqPark');
+    
+    // this.props.navigation.navigate('ReqPark');
   }
 
   
@@ -64,7 +67,7 @@ class HomePark extends Component {
 
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
- 
+   
     
 
     return (
@@ -130,8 +133,7 @@ class HomePark extends Component {
           <MapView.Marker
             coordinate={{latitude: this.state.targLat,
             longitude: this.state.targLng}}
-            title={"title"}
-            description={"description"}
+            
          />
           </MapView>
           <View style={{flex:0, justifyContent: `center`,alignItems: `center`,backgroundColor:'white'}}>
@@ -142,6 +144,7 @@ class HomePark extends Component {
             <Text>Submit</Text>
           </TouchableOpacity>
           </View>
+          
         </View> 
       
     );
@@ -165,7 +168,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
+  
   return {
+    space:state.park.space
   }
 }
 

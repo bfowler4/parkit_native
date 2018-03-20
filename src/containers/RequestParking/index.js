@@ -10,32 +10,39 @@ class ReqPark extends Component {
     super(props);
     this.state = {
      
-
     }
   }
-  componentWillMount(){
-    
+
+  componentWillMount (){
+    this.setState({})
+  
   }
+  
   render(){
-    // console.log('space', this.props.space.longitude)
-    console.log('customer', this.props.customer.longitude)
+ 
+   console.log(this.props.space.latitude)
+   console.log(this.props.space.longitude)
     
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
     return (
-      <View>
-          {/* <MapView
-          style={{ flex: 1 }}
-          showsUserLocation={true}
-          followUserLocation={true}
-          initialRegion={{
-            latitude: this.props.space.latitude,
-            longitude: this.props.space.longitude,
-            latitudeDelta: .05 * (screenWidth / screenHeight),
-            longitudeDelta: .05 * (screenWidth / screenHeight),
-          }}
-          followUserLocation={true}>
-          </MapView> */}
+      <View style={{flex:1}}>
+        <MapView
+        style={{ flex: 1 }}
+       initialRegion={{
+      latitude: this.props.space.latitude,
+      longitude: this.props.space.longitude,
+      latitudeDelta: .05 * (screenWidth / screenHeight),
+      longitudeDelta: .05 * (screenWidth / screenHeight),
+    }}>
+    <MapView.Marker
+            coordinate={{latitude: this.props.space.latitude,
+            longitude: this.props.space.longitude}} />
+    
+    </MapView>
+
+    
+          
       </View>
     )
   }
@@ -43,7 +50,6 @@ class ReqPark extends Component {
 
 
 const mapStateToProps = state => {
-  
   return {
     space:state.park.space,
     customer:state.park.customerCoors

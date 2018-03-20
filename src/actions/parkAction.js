@@ -14,7 +14,7 @@ export const spaceRequest = (lat, lng) => {
     latitude: lat
   };
   return dispatch => {
-    return Axios.post(REQUEST, latlng, {
+    return Axios.post('http://localhost:8080/api/spaces/request', latlng, {
       headers: {
         Authorization: `Bearer ${token}`
       }
