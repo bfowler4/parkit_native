@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, KeyboardAvoidingView, Image } from 'react-native';
 import { Icon, Button, Header, Container, Content, Left } from 'native-base';
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Image, KeyboardAvoidingView } from 'react-native';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 
-import { login } from '../../actions/authentication';
+import { register } from '../../actions/authentication';
 
 
-class LoginPage extends Component {
+class RegistrationPage extends Component {
   constructor(props) {
     super(props);
-   
+
     this.state = {
+      name: ``,
       email: ``,
       password: ``
     }
@@ -20,22 +20,24 @@ class LoginPage extends Component {
 
   static navigationOptions = {
     drawerIcon: (
-      <Image source={require('../../.././assetts/Login.png')}
+      <Image source={require('../../.././assetts/register2.png')}
       style={{ height: 24, width: 24 }} />
     )
   }
+
   handleSubmit() {
     const {
+      name,
       email,
       password
     } = this.state;
-    this.props.login(email, password);
+    this.props.register(name, email, password);
   }
   
   render() {
     return (
       <Container>
-        <Header>
+      <Header>
           <Left>
             <Icon name="ios-menu" onPress={() => this.props.navigation.navigate('DrawerOpen')} />
             </Left>
@@ -45,24 +47,22 @@ class LoginPage extends Component {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          
-      <View style={styles.container}>
-        <TextInput 
-          placeholder='Email'
-          autoCorrect={false}
-          autoCapitalize={'none'}
-          onChangeText={(email) => this.setState({ email })}/>
-        <TextInput 
-          placeholder='Password' 
-          autoCorrect={false}
-          secureTextEntry={true}
-          onChangeText={(password) => this.setState({ password })}/>
+        </Content>
       <KeyboardAvoidingView style={styles.container} behavior='padding'>
         <View style={styles.inputSection}>
           <FontAwesome name='user' size={20} style={styles.icon} color='black' />
           <TextInput
             style={styles.input}  
-            placeholder='Email'
+            placeholder='Full Name'
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            onChangeText={(name) => this.setState({ name })}/>
+        </View>
+        <View style={styles.inputSection}>
+          <MaterialIcons name='email' size={20} style={styles.icon} color='black' />
+          <TextInput
+            style={{ flex: 1 }} 
+            placeholder='Email' 
             autoCorrect={false}
             autoCapitalize={'none'}
             onChangeText={(email) => this.setState({ email })}/>
@@ -79,12 +79,10 @@ class LoginPage extends Component {
         <TouchableOpacity
           style={styles.button}
           onPress={this.handleSubmit.bind(this)}>
-          <Text>Login</Text>
+          <Text>Sign Up</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-      </View>
-      </Content>
-        </Container>
+      </Container>
     );
   }
 }
@@ -96,16 +94,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password) => {
-      dispatch(login(email, password));
+    register: (name, email, password) => {
+      dispatch(register(name, email, password));
     }
   }
 }
 
-export default ConnectedLoginPage = connect(
+export default ConnectedRegistrationPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginPage);
+)(RegistrationPage);
 
 const styles = StyleSheet.create({
   container: {

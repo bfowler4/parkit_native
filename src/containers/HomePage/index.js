@@ -6,10 +6,6 @@ import { Icon, Button, Header, Container, Content, Left } from 'native-base';
 class HomePage extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      text: ``
-    }
   }
 
   static navigationOptions = {
@@ -24,7 +20,8 @@ class HomePage extends Component {
       <Container>
         <Header style={{ backgroundColor: 'white' }}>
           <Left>
-            <Icon name="ios-menu" style={{ color: 'black' }} onPress={() => this.props.navigation.navigate('DrawerOpen')} />
+            <Icon name="ios-menu" style={{ color: 'black' }}
+              onPress={() => this.props.navigation.navigate('DrawerOpen')} />
           </Left>
         </Header>
         <Content contentContainerStyle={{
@@ -45,8 +42,8 @@ class HomePage extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => Alert.alert(`Registered!`)}>
-              <Text>Register</Text>
+              onPress={() => this.props.navigation.navigate(`Register`)}>
+              <Text>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </Content>
@@ -54,6 +51,7 @@ class HomePage extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -76,5 +74,4 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
-
 export default HomePage;

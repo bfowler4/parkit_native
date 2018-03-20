@@ -12,9 +12,7 @@ const store = createStore(
   applyMiddleware(middleware, thunk),
 );
 
-console.log(store);
-
-class ReduxExampleApp extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -24,4 +22,4 @@ class ReduxExampleApp extends React.Component {
   }
 }
 
-export default ReduxExampleApp;
+export default App;
