@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-
 class HomePage extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      text: ``
-    }
   }
   
   render() {
@@ -21,13 +16,15 @@ class HomePage extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => Alert.alert(`Registered!`)}>
-          <Text>Register</Text>
+          onPress={() => this.props.navigation.navigate(`Register`)}>
+          <Text>Sign Up</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
+
+export default HomePage;
 
 const styles = StyleSheet.create({
   container: {
@@ -49,5 +46,3 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
-
-export default HomePage;
