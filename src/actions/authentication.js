@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
-const HOST = `http://5c5ff349.ngrok.io/api`;
+const HOST = `http://9400c1a9.ngrok.io/api`;
 
 export const SET_USER = `SET_USER`;
 export const SET_TOKEN = `SET_TOKEN`;
@@ -63,7 +63,7 @@ export const logout = () => {
       type: SET_USER,
       user: null
     });
-    AsyncStorage.removeItem(`token`)
+    AsyncStorage.clear()
     .then(() => {
       const redirect = NavigationActions.navigate({
         routeName: `Auth`

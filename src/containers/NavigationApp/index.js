@@ -11,26 +11,36 @@ import RolePick from '../RolePickPage';
 
 import { addListener } from '../../utilities/redux';
 
-const AppStack = StackNavigator({
-  Home: {
-    screen: Protected
-  },
-  RolePick: {
-    screen: RolePick
+const AppStack = StackNavigator(
+  {
+    RolePick: {
+      screen: RolePick
+    },
+    ParkHome: {
+      screen: Protected
+    }
+  }, 
+  {
+    initialRouteName: `RolePick`
   }
-});
+);
 
-const AuthStack = StackNavigator({
-  Home: {
-    screen: HomePage
-  },
-  Login: {
-    screen: LoginPage
-  },
-  Register: {
-    screen: RegistrationPage
+const AuthStack = StackNavigator(
+  {
+    Home: {
+      screen: HomePage
+    },
+    Login: {
+      screen: LoginPage
+    },
+    Register: {
+      screen: RegistrationPage
+    }
+  }, 
+  {
+    initialRouteName: `Home`
   }
-});
+);
 
 export const AppNavigator = SwitchNavigator(
   {

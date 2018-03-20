@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
 
 
-import { loadUser, logout } from '../actions/authentication';
+import { logout } from '../actions/authentication';
 
 class Protected extends Component {
-  // componentWillMount() {
-  //   this.props.loadUser();
-  // }
-
   render() {
-    console.log(this.props.user);
     return (
       <View style={{ flex: 1 }}>
         <Text>Hello from protected</Text>
@@ -31,9 +26,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadUser: () => {
-      dispatch(loadUser());
-    },
     logout: () => {
       dispatch(logout());
     }

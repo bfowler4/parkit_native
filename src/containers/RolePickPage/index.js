@@ -5,17 +5,32 @@ import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-na
 
 
 class RolePick extends Component {
+  handleSetPark() {
+    AsyncStorage.setItem(`activeRole`, `park`)
+    .then(() => {
+      this.props.navigation.navigate(`ParkHome`);    
+    });
+  }
+  
+  handleSetHost() {
+    AsyncStorage.setItem(`activeRole`, `host`)
+    .then(() => {
+      this.props.navigation.navigate(`HostHome`);
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => AsyncStorage.setItem(`activeRole`, `park`)}>
+          value={`park`}
+          onPress={this.handleSetPark.bind(this)}>
           <Text>Park with Parkit</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => AsyncStorage.setItem(`activeRole`, `host`)}>
+          onPress={this.handleSetHost.bind(this)}>
           <Text>Host with Parkit</Text>
         </TouchableOpacity>
       </View>

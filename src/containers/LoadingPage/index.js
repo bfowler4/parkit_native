@@ -14,10 +14,19 @@ class LoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   bootstrapAsync = async () => {
     const token = await AsyncStorage.getItem('token');
-
-    setTimeout(() => {
-      this.props.navigation.navigate(token ? 'App' : 'Auth');
-    }, 0);
+    if (token) {
+      const activeRole = await AsyncStorage.getItem(`activeRole`);
+      switch (activeRole) {
+        case `park`:
+          return this.props.navigation.navigate(`ParkHome`);
+        case `host`:
+          return this.props.navigation.navigate(`HostHome`);
+        default:
+          return this.props.navigation.navigate(`RolePick`);
+      }
+    } else {
+      this.props.navigation.navigate('Auth');
+    }
   };
 
   // Render any loading content that you like here
