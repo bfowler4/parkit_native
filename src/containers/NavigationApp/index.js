@@ -27,68 +27,44 @@ const customDrawerContentComponent = (props) => (
       <DrawerItems { ...props } />
     </Content>
   </Container>
-)
+);
 
-const Drawer = DrawerNavigator({
-  Home: {
-    screen: HomePage,
-  },
-  Login: {
-    screen: LoginPage,
-  },
-  Register: {
-    screen: RegistrationPage
-  },
-}, {
-    initialRouteName: 'Home',
+const unAuthDrawer = DrawerNavigator(
+  {
+    Home: { screen: HomePage },
+    Login: { screen: LoginPage },
+    Register: { screen: RegistrationPage }
+  }, {
+    initialRouteName: `Home`,
     contentComponent: customDrawerContentComponent,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle'
-  });
-
-  
-const AppStack = StackNavigator(
-  {
-    RolePick: {
-      screen: RolePick
-    },
-    ParkHome: {
-      screen: Protected
-    },
-  }, 
-  {
-    initialRouteName: `RolePick`
+    drawerToggleRoute: 'DrawerToggle',
   }
 );
 
-const AuthStack = StackNavigator(
+const authDrawer = DrawerNavigator(
   {
-    Home: {
-      screen: HomePage
-    },
-    Login: {
-      screen: LoginPage
-    },
-    Register: {
-      screen: RegistrationPage
-    }
-  }, 
-  {
-    initialRouteName: `Home`,
-    headerMode: 'none',
+    RolePick: { screen: RolePick },
+    ParkHome: { screen: Protected }
+  }, {
+    initialRouteName: 'RolePick',
+    contentComponent: customDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
   }
 );
 
 export const AppNavigator = SwitchNavigator(
   {
     Loading: LoadingPage,
-    App: AppStack,
-    Auth: AuthStack,
-    NavDrawer: Drawer
+    App: authDrawer,
+    Auth: unAuthDrawer
   },
   {
-    initialRouteName: `Loading`
+    initialRouteName: `Loading`,
+    headerMode: `none`
   }
 );
 

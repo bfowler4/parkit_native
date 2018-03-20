@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, KeyboardAvoidingView, Image } from 'react-native';
-import { Icon, Button, Header, Container, Content, Left } from 'native-base';
 import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 
+import Container from '../../components/container';
 import { register } from '../../actions/authentication';
 
 
@@ -21,7 +21,7 @@ class RegistrationPage extends Component {
   static navigationOptions = {
     drawerIcon: (
       <Image source={require('../../.././assetts/register2.png')}
-      style={{ height: 24, width: 24 }} />
+        style={{ height: 24, width: 24 }} />
     )
   }
 
@@ -33,55 +33,44 @@ class RegistrationPage extends Component {
     } = this.state;
     this.props.register(name, email, password);
   }
-  
+
   render() {
     return (
-      <Container>
-      <Header>
-          <Left>
-            <Icon name="ios-menu" onPress={() => this.props.navigation.navigate('DrawerOpen')} />
-            </Left>
-        </Header>
-        <Content contentContainerStyle={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-        </Content>
-      <KeyboardAvoidingView style={styles.container} behavior='padding'>
-        <View style={styles.inputSection}>
-          <FontAwesome name='user' size={20} style={styles.icon} color='black' />
-          <TextInput
-            style={styles.input}  
-            placeholder='Full Name'
-            autoCorrect={false}
-            autoCapitalize={'none'}
-            onChangeText={(name) => this.setState({ name })}/>
-        </View>
-        <View style={styles.inputSection}>
-          <MaterialIcons name='email' size={20} style={styles.icon} color='black' />
-          <TextInput
-            style={{ flex: 1 }} 
-            placeholder='Email' 
-            autoCorrect={false}
-            autoCapitalize={'none'}
-            onChangeText={(email) => this.setState({ email })}/>
-        </View>
-        <View style={styles.inputSection}>
-          <Entypo name='key' size={20} style={styles.icon} color='black' />
-          <TextInput
-            style={{ flex: 1 }} 
-            placeholder='Password' 
-            autoCorrect={false}
-            secureTextEntry={true}
-            onChangeText={(password) => this.setState({ password })}/>
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.handleSubmit.bind(this)}>
-          <Text>Sign Up</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+      <Container navigation={this.props.navigation}>
+        <KeyboardAvoidingView style={styles.container} behavior='padding'>
+          <View style={styles.inputSection}>
+            <FontAwesome name='user' size={20} style={styles.icon} color='black' />
+            <TextInput
+              style={styles.input}
+              placeholder='Full Name'
+              autoCorrect={false}
+              autoCapitalize={'none'}
+              onChangeText={(name) => this.setState({ name })} />
+          </View>
+          <View style={styles.inputSection}>
+            <MaterialIcons name='email' size={20} style={styles.icon} color='black' />
+            <TextInput
+              style={{ flex: 1 }}
+              placeholder='Email'
+              autoCorrect={false}
+              autoCapitalize={'none'}
+              onChangeText={(email) => this.setState({ email })} />
+          </View>
+          <View style={styles.inputSection}>
+            <Entypo name='key' size={20} style={styles.icon} color='black' />
+            <TextInput
+              style={{ flex: 1 }}
+              placeholder='Password'
+              autoCorrect={false}
+              secureTextEntry={true}
+              onChangeText={(password) => this.setState({ password })} />
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.handleSubmit.bind(this)}>
+            <Text>Sign Up</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </Container>
     );
   }
