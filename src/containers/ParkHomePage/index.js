@@ -33,9 +33,7 @@ class HomePark extends Component {
       this._getLocationAsync();
     }
   }
-  componentDidUpdate(){
-    this.props.space?this.props.navigation.navigate('ReqPark'):console.log('not ready');
-  }
+ 
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -58,16 +56,20 @@ class HomePark extends Component {
    this.props.spaceRequest(this.state.targLat,this.state.targLng)
 
     this.state.location?this.props.customercoors(this.state.location.coords):console.log('no location');
+
+    this.props.navigation.navigate('ReviewPark')
     
-    // this.props.navigation.navigate('ReqPark');
+ 
   }
 
   
   render() {
 
+   
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
    
+    
     
 
     return (
@@ -80,8 +82,7 @@ class HomePark extends Component {
               autoFocus={false}
               returnKeyType={'default'}
               fetchDetails={true}
-              currentLocation={true} 
-              currentLocationLabel="Current location"
+              
               // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
               GoogleReverseGeocodingQuery={{
                 // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro

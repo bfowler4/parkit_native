@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, KeyboardAvoidingView } from 'react-native';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 
-import { login } from '../../actions/authentication';
+import { register } from '../../actions/authentication';
 
 
-class LoginPage extends Component {
+class RegistrationPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: ``,
       email: ``,
       password: ``
     }
@@ -18,10 +19,11 @@ class LoginPage extends Component {
 
   handleSubmit() {
     const {
+      name,
       email,
       password
     } = this.state;
-    this.props.login(email, password);
+    this.props.register(name, email, password);
   }
   
   render() {
@@ -31,7 +33,16 @@ class LoginPage extends Component {
           <FontAwesome name='user' size={20} style={styles.icon} color='black' />
           <TextInput
             style={styles.input}  
-            placeholder='Email'
+            placeholder='Full Name'
+            autoCorrect={false}
+            autoCapitalize={'none'}
+            onChangeText={(name) => this.setState({ name })}/>
+        </View>
+        <View style={styles.inputSection}>
+          <MaterialIcons name='email' size={20} style={styles.icon} color='black' />
+          <TextInput
+            style={{ flex: 1 }} 
+            placeholder='Email' 
             autoCorrect={false}
             autoCapitalize={'none'}
             onChangeText={(email) => this.setState({ email })}/>
@@ -48,7 +59,7 @@ class LoginPage extends Component {
         <TouchableOpacity
           style={styles.button}
           onPress={this.handleSubmit.bind(this)}>
-          <Text>Login</Text>
+          <Text>Sign Up</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -62,16 +73,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password) => {
-      dispatch(login(email, password));
+    register: (name, email, password) => {
+      dispatch(register(name, email, password));
     }
   }
 }
 
-export default ConnectedLoginPage = connect(
+export default ConnectedRegistrationPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginPage);
+)(RegistrationPage);
 
 const styles = StyleSheet.create({
   container: {
