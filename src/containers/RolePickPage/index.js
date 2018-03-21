@@ -5,6 +5,10 @@ import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-na
 import Container from '../../components/container';
 
 class RolePick extends Component {
+  static navigationOptions = {
+    drawerLabel: () => null
+  }
+
   handleSetPark() {
     AsyncStorage.setItem(`activeRole`, `park`)
     .then(() => {

@@ -8,9 +8,12 @@ import { Container, Content, Header, Body, Icon } from 'native-base';
 import LoadingPage from '../LoadingPage';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
+import HomePark from '../ParkHomePage';
+import ReqPark from '../RequestParking';
 import RegistrationPage from '../RegistrationPage';
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
+
 
 import { addListener } from '../../utilities/redux';
 
@@ -46,7 +49,7 @@ const unAuthDrawer = DrawerNavigator(
 const authDrawer = DrawerNavigator(
   {
     RolePick: { screen: RolePick },
-    ParkHome: { screen: Protected }
+    ParkHome: { screen: HomePark }
   }, {
     initialRouteName: 'RolePick',
     contentComponent: customDrawerContentComponent,
