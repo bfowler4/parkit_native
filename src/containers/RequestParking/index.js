@@ -9,17 +9,15 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native";
-import { Constants, MapView, Marker} from "expo";
+import { Constants, MapView, Marker } from "expo";
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
 import Axios from "axios";
-import {reserveSpace} from '../../actions/parkAction'
+import { reserveSpace } from "../../actions/parkAction";
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.771707;
-const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -39,66 +37,78 @@ class ReqPark extends Component {
           latitude: 21.296923,
           longitude: -157.822839
         }
-			],
-			toggle:null,
+      ],
+      toggle: null,
       isReady: null,
       distance: null,
-      end_time:1521694911520,
+      end_time: 1521694911520
     };
 
     this.mapView = null;
-	}
-  componentDidMount(){
-    
   }
-	
-			componentWillReceiveProps(nextProps){
-				
-				if (nextProps.space && !this.state.distance) {
-		
-					let space = {
-						latitude: nextProps.space.latitude,
-						longitude: nextProps.space.longitude
-					};
-					
-					let customer = {
-						latitude: 21.296923,
-						longitude: -157.822839
-					};
-					let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
-						space.latitude
-					},${space.longitude}&destinations=${customer.latitude},${
-						customer.longitude
-					}&key${GOOGLE_MAPS_APIKEY}`;		
-					 Axios.get(destinationURL).then(result => {
-						!this.state.distance?this.setState({distance:result}):console.log('stop')
-					 return true
-					});
-				}
-			}
-		
-			onReady = result => {
-				
-				this.mapView.fitToCoordinates(result.coordinates, {
-					edgePadding: {
-						right: width / 20,
-						bottom: height / 20,
-						left: width / 20,
-						top: height / 20
-					}
-				});
-			}
+  componentDidMount() {
+    {
+      setTimeout(function() {
+        onTimeOut();
+      }, 60000);
+    }
+
+    onTimeOut = () => {
+      this.setState({ isReady: true });
+      console.log("state changed", this.state.isReady);
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.space && !this.state.distance) {
+      let space = {
+        latitude: nextProps.space.latitude,
+        longitude: nextProps.space.longitude
+      };
+
+      let customer = {
+        latitude: 21.296923,
+        longitude: -157.822839
+      };
+      let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
+        space.latitude
+      },${space.longitude}&destinations=${customer.latitude},${
+        customer.longitude
+      }&key${GOOGLE_MAPS_APIKEY}`;
+      Axios.get(destinationURL).then(result => {
+        !this.state.distance
+          ? this.setState({ distance: result })
+          : console.log("stop");
+        return true;
+      });
+    }
+  }
+
+  onReady = result => {
+    this.mapView.fitToCoordinates(result.coordinates, {
+      edgePadding: {
+        right: width / 20,
+        bottom: height / 20,
+        left: width / 20,
+        top: height / 20
+      }
+    });
+  };
+
+  timeOut() {
+    console.log("something");
+  }
 
   onError = errorMessage => {
     Alert.alert(errorMessage);
   };
 
   handleSubmit() {
-    console.log(distanceMiles)
+    console.log(distanceMiles);
   }
 
   render() {
-    console.log(this.props)
+    console.log(this.props);
     if (!this.state.distance) {
       return (
         <View
@@ -108,40 +118,56 @@ class ReqPark extends Component {
         </View>
       );
     }
-    console.log(this.props.space)
+    console.log(this.props.space);
 
-		//<---------------do work here
+    //<---------------do work here
 
-		let space = {
-			latitude: this.props.space.latitude,
-			longitude: this.props.space.longitude
-		};
-		
-		let customer = {
-			latitude: 21.296923,
-			longitude: -157.822839
-		};
-		let distanceMiles = this.state.distance.data.rows[0].elements[0].distance.text;
-    let duration = parseInt(this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]);
-    let convertUnix = (duration+5)*60;
+    let space = {
+      latitude: this.props.space.latitude,
+      longitude: this.props.space.longitude
+    };
+
+    let customer = {
+      latitude: 21.296923,
+      longitude: -157.822839
+    };
+    let distanceMiles = this.state.distance.data.rows[0].elements[0].distance
+      .text;
+    let duration = parseInt(
+      this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
+    );
+    let convertUnix = (duration + 5) * 60;
     let start_time = new Date().getTime() + convertUnix;
     let user_id = this.props.space.user_id;
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
-   
-    // reserverSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
 
-    
+    // reserverSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
 
     return (
       <View style={styles.container}>
-      
+        {this.state.isReady
+          ? Alert.alert(
+              "Timed Out",
+              "Sorrry caaaaaaaz",
+              [
+                {
+                  text: "Parking Page",
+                  onPress: () => {
+                    this.props.navigation.navigate(`ParkHome`);
+                    this.setState({isReady:null})
+                  }
+                }
+              ],
+              { cancelable: false }
+            )
+          : false}
         <MapView
           initialRegion={{
-          	latitude: this.props.space.latitude,
-          	longitude: this.props.space.longitude,
-          	latitudeDelta: LATITUDE_DELTA,
-          	longitudeDelta: LONGITUDE_DELTA,
+            latitude: this.props.space.latitude,
+            longitude: this.props.space.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
           }}
           style={StyleSheet.absoluteFill}
           ref={c => (this.mapView = c)}
@@ -158,32 +184,31 @@ class ReqPark extends Component {
             />
           )}
 
-          <MapView.Marker
-            coordinate={customer}
-          />
-            <MapView.Marker
-            coordinate={space}
-          />
-
-          
+          <MapView.Marker coordinate={customer} />
+          <MapView.Marker coordinate={space} />
         </MapView>
 
-				<View>
-					<View >
-						<Text>{`${distanceMiles}`}</Text>
-						<Text>{`${duration} minutes to destination`}</Text>
+        <View>
+          <View>
+            <Text>{`${distanceMiles}`}</Text>
+            <Text>{`${duration} minutes to destination`}</Text>
             <Text>{`Start ${start_time} End ${this.state.end_time}`}</Text>
-					</View>
+          </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              this.props.reserveSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
+              this.props.reserveSpace(
+                user_id,
+                space_id,
+                time_requested,
+                start_time,
+                this.state.end_time
+              );
             }}
           >
             <Text>Submit</Text>
           </TouchableOpacity>
-				</View>
-
+        </View>
       </View>
     );
   }
@@ -208,10 +233,9 @@ const styles = StyleSheet.create({
     borderStyle: `solid`,
     borderRadius: 5,
     backgroundColor: "grey",
-    zIndex:100
+    zIndex: 100
   }
 });
-
 
 const mapStateToProps = state => {
   return {
@@ -222,8 +246,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    reserveSpace: (user,space,requested,start,end) => {
-      dispatch(reserveSpace(user,space,requested,start,end));
+    reserveSpace: (user, space, requested, start, end) => {
+      dispatch(reserveSpace(user, space, requested, start, end));
     }
   };
 };
