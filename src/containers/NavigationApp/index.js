@@ -5,6 +5,8 @@ import { addNavigationHelpers, StackNavigator, SwitchNavigator } from 'react-nav
 import LoadingPage from '../LoadingPage';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
+import HomePark from '../ParkHomePage';
+import ReqPark from '../RequestParking';
 import RegistrationPage from '../RegistrationPage';
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
@@ -17,7 +19,11 @@ const AppStack = StackNavigator(
       screen: RolePick
     },
     ParkHome: {
-      screen: Protected
+      screen: HomePark
+    },
+
+    ReviewPark: {
+      screen: ReqPark
     },
   }, 
   {

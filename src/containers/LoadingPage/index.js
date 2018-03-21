@@ -31,6 +31,7 @@ class LoadingScreen extends React.Component {
 
   // Render any loading content that you like here
   render() {
+    AsyncStorage.clear();
     return (
       <View style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}>
         <ActivityIndicator size='large' color='#0000ff'/>
