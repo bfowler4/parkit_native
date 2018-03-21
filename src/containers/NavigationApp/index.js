@@ -45,7 +45,8 @@ const authDrawer = DrawerNavigator(
     RolePick: { screen: RolePick },
     ParkHome: { screen: HomePark },
     ReviewPark: { screen: ReqPark },
-    Logout: { screen: LogoutPage }
+    Logout: { screen: LogoutPage },
+    Test: { screen: Protected }
   }, {
     initialRouteName: 'RolePick',
     contentComponent: customDrawerContentComponent,
