@@ -24,6 +24,10 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU";
 
 class ReqPark extends Component {
+  static navigationOptions = {
+    drawerLabel: () => null
+  }
+
   constructor(props) {
     super(props);
 
@@ -65,7 +69,6 @@ class ReqPark extends Component {
         latitude: nextProps.space.latitude,
         longitude: nextProps.space.longitude
       };
-
 
       let customer = {
         latitude: 21.296923,
@@ -113,7 +116,6 @@ class ReqPark extends Component {
         </View>
       );
     }
-   ;
 
     let space = {
       latitude: this.props.space.latitude,

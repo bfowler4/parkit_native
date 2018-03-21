@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
 
-
+import Container from '../../components/container';
 
 class RolePick extends Component {
+  static navigationOptions = {
+    drawerLabel: () => null
+  }
+
   handleSetPark() {
     AsyncStorage.setItem(`activeRole`, `park`)
     .then(() => {
@@ -21,19 +25,21 @@ class RolePick extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          value={`park`}
-          onPress={this.handleSetPark.bind(this)}>
-          <Text>Park with Parkit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.handleSetHost.bind(this)}>
-          <Text>Host with Parkit</Text>
-        </TouchableOpacity>
-      </View>
+      <Container navigation={this.props.navigation}>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.button}
+            value={`park`}
+            onPress={this.handleSetPark.bind(this)}>
+            <Text>Park with Parkit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.handleSetHost.bind(this)}>
+            <Text>Host with Parkit</Text>
+          </TouchableOpacity>
+        </View>
+      </Container>
     );
   }
 }
