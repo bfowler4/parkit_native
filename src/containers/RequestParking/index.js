@@ -66,6 +66,7 @@ class ReqPark extends Component {
         longitude: nextProps.space.longitude
       };
 
+
       let customer = {
         latitude: 21.296923,
         longitude: -157.822839
@@ -84,6 +85,7 @@ class ReqPark extends Component {
     }
   }
 
+
   onReady = result => {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -95,20 +97,13 @@ class ReqPark extends Component {
     });
   };
 
-  timeOut() {
-    console.log("something");
-  }
-
+ 
   onError = errorMessage => {
     Alert.alert(errorMessage);
   };
 
-  handleSubmit() {
-    console.log(distanceMiles);
-  }
 
   render() {
-    console.log(this.props);
     if (!this.state.distance) {
       return (
         <View
@@ -118,9 +113,7 @@ class ReqPark extends Component {
         </View>
       );
     }
-    console.log(this.props.space);
-
-    //<---------------do work here
+   ;
 
     let space = {
       latitude: this.props.space.latitude,
@@ -142,7 +135,6 @@ class ReqPark extends Component {
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
-    // reserverSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
 
     return (
       <View style={styles.container}>

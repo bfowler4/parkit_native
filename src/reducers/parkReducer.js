@@ -14,7 +14,6 @@ export default (state = initialState, action = {}) =>{
     case CUSTOMER_COORS:
     return {...state, customerCoors:action.payload}
     case RESERVE_SPACE:
-    console.log('inreducer', action.payload);
     return {...state, reservedStall:action.payload}
     default:
     return state;
