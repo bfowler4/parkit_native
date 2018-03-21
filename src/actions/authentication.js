@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
-const HOST = `http://localhost:8080/api`;
+const HOST = `http://170cfa1c.ngrok.io/api`;
 
 export const SET_USER = `SET_USER`;
 export const SET_TOKEN = `SET_TOKEN`;

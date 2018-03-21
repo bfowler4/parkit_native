@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import { Icon, Button, Header, Container, Content, Left } from 'native-base';
+import Container from '../../components/container';
 
 class HomePage extends Component {
   constructor(props) {
@@ -17,36 +17,21 @@ class HomePage extends Component {
 
   render() {
     return (
-      <Container>
-        <Header style={{ backgroundColor: 'white' }}>
-          <Left>
-            <Icon name="ios-menu" style={{ color: 'black' }}
-              onPress={() => this.props.navigation.navigate('DrawerOpen')} />
-          </Left>
-        </Header>
-        <Content contentContainerStyle={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <Text>
-            Home
-            </Text>
+      <Container navigation={this.props.navigation}>
+        <View style={styles.container}>
           <Image source={require('../../.././assetts/ParkItLogo9.png')}
-            style={{ height: 760, width: 500 }} />
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate(`Login`)}>
-              <Text>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate(`Register`)}>
-              <Text>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-        </Content>
+            style={{ height: Dimensions.get(`screen`).height, width: Dimensions.get(`screen`).width, zIndex: -1, position: `absolute` }} />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate(`Login`)}>
+            <Text>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate(`Register`)}>
+            <Text>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </Container>
     );
   }
@@ -59,7 +44,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: 50
   },
   button: {
     justifyContent: `center`,

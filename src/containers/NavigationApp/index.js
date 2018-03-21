@@ -2,34 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, TabNavigator, DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import { Container, Content, Header, Body, Icon } from 'native-base';
 
 
 import LoadingPage from '../LoadingPage';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
+import RegistrationPage from '../RegistrationPage';
+
 import HomePark from '../ParkHomePage';
 import ReqPark from '../RequestParking';
-import RegistrationPage from '../RegistrationPage';
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
-
+import LogoutPage from '../LogoutPage';
 
 import { addListener } from '../../utilities/redux';
 
 const customDrawerContentComponent = (props) => (
-  <Container>
-    <Header style={{ height: 200 }}>
-      <Body>
-        <Image
-          style={styles.drawerImage}
-          source={require('../../.././assetts/ParkItLogoNavbar.png')} />
-      </Body>
-    </Header>
-    <Content>
-      <DrawerItems { ...props } />
-    </Content>
-  </Container>
+  <View style={{ flex: 1 }}>
+    <Image 
+      style={styles.drawerImage}
+      source={require('../../.././assetts/ParkItLogoNavbar.png')} />
+    <DrawerItems { ...props } />
+  </View>
 );
 
 const unAuthDrawer = DrawerNavigator(
@@ -49,7 +43,9 @@ const unAuthDrawer = DrawerNavigator(
 const authDrawer = DrawerNavigator(
   {
     RolePick: { screen: RolePick },
-    ParkHome: { screen: HomePark }
+    ParkHome: { screen: HomePark },
+    ReviewPark: { screen: ReqPark },
+    Logout: { screen: LogoutPage }
   }, {
     initialRouteName: 'RolePick',
     contentComponent: customDrawerContentComponent,
@@ -91,12 +87,6 @@ const mapStateToProps = state => ({
 });
 
 styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
   drawerImage: {
     height: 100,
     width: 280

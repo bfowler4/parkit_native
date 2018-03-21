@@ -24,6 +24,10 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = "AIzaSyAQ2u55pz05mQhaCKQiax4VQnTKK3UMJnI";
 
 class ReqPark extends Component {
+  static navigationOptions = {
+    drawerLabel: () => null
+  }
+
   constructor(props) {
     super(props);
 
@@ -37,52 +41,52 @@ class ReqPark extends Component {
           latitude: 21.296923,
           longitude: -157.822839
         }
-			],
-			toggle:null,
+      ],
+      toggle: null,
       isReady: null,
       distance: null,
     };
 
     this.mapView = null;
-	}
-	
-	
-			componentWillReceiveProps(nextProps){
-				
-				if (nextProps.space && !this.state.distance) {
-		
-					let space = {
-						latitude: nextProps.space.latitude,
-						longitude: nextProps.space.longitude
-					};
-					
-					let customer = {
-						latitude: 21.296923,
-						longitude: -157.822839
-					};
-					let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
-						space.latitude
-					},${space.longitude}&destinations=${customer.latitude},${
-						customer.longitude
-					}&key${GOOGLE_MAPS_APIKEY}`;		
-					 Axios.get(destinationURL).then(result => {
-						!this.state.distance?this.setState({distance:result}):console.log('stop')
-					 return true
-					});
-				}
-			}
-		
-			onReady = result => {
-				
-				this.mapView.fitToCoordinates(result.coordinates, {
-					edgePadding: {
-						right: width / 20,
-						bottom: height / 20,
-						left: width / 20,
-						top: height / 20
-					}
-				});
-			}
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+
+    if (nextProps.space && !this.state.distance) {
+
+      let space = {
+        latitude: nextProps.space.latitude,
+        longitude: nextProps.space.longitude
+      };
+
+      let customer = {
+        latitude: 21.296923,
+        longitude: -157.822839
+      };
+      let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
+        space.latitude
+        },${space.longitude}&destinations=${customer.latitude},${
+        customer.longitude
+        }&key${GOOGLE_MAPS_APIKEY}`;
+      Axios.get(destinationURL).then(result => {
+        !this.state.distance ? this.setState({ distance: result }) : console.log('stop')
+        return true
+      });
+    }
+  }
+
+  onReady = result => {
+
+    this.mapView.fitToCoordinates(result.coordinates, {
+      edgePadding: {
+        right: width / 20,
+        bottom: height / 20,
+        left: width / 20,
+        top: height / 20
+      }
+    });
+  }
 
   onError = errorMessage => {
     Alert.alert(errorMessage);
@@ -97,37 +101,38 @@ class ReqPark extends Component {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
-		}
+    }
 
-		//<---------------do work here
+    //<---------------do work here
 
-		let space = {
-			latitude: this.props.space.latitude,
-			longitude: this.props.space.longitude
-		};
-		
-		let customer = {
-			latitude: 21.296923,
-			longitude: -157.822839
-		};
-		let distanceMiles = Number(this.state.distance.data.rows[0].elements[0].distance.text.replace(/[^0-9\.]+/g,""));
-		let duration = parseInt(this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]);
+    let space = {
+      latitude: this.props.space.latitude,
+      longitude: this.props.space.longitude
+    };
 
-		
+    let customer = {
+      latitude: 21.296923,
+      longitude: -157.822839
+    };
 
-		
-		
-		
+    let distanceMiles = Number(this.state.distance.data.rows[0].elements[0].distance.text.replace(/[^0-9\.]+/g, ""));
+    let duration = parseInt(this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]);
+
+
+
+
+
+
 
 
     return (
       <View style={styles.container}>
         <MapView
           initialRegion={{
-          	latitude: this.props.space.latitude,
-          	longitude: this.props.space.longitude,
-          	latitudeDelta: LATITUDE_DELTA,
-          	longitudeDelta: LONGITUDE_DELTA,
+            latitude: this.props.space.latitude,
+            longitude: this.props.space.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
           }}
           style={StyleSheet.absoluteFill}
           ref={c => (this.mapView = c)}
@@ -144,12 +149,12 @@ class ReqPark extends Component {
             />
           )}
         </MapView>
-				<View>
-					<View >
-						<Text>{`${distanceMiles} miles`}</Text>
-						<Text>{`${duration} minutes to destination`}</Text>
-					</View>
-				</View>
+        <View>
+          <View >
+            <Text>{`${distanceMiles} miles`}</Text>
+            <Text>{`${duration} minutes to destination`}</Text>
+          </View>
+        </View>
 
       </View>
     );
