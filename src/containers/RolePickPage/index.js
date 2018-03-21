@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
 
 
-
 class RolePick extends Component {
   handleSetPark() {
     AsyncStorage.setItem(`activeRole`, `park`)
@@ -18,6 +17,7 @@ class RolePick extends Component {
       this.props.navigation.navigate(`HostHome`);
     });
   }
+
 
   render() {
     return (

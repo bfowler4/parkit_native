@@ -18,7 +18,7 @@ const AppStack = StackNavigator(
     },
     ParkHome: {
       screen: Protected
-    }
+    },
   }, 
   {
     initialRouteName: `RolePick`
