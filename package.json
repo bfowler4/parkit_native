@@ -21,6 +21,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^25.0.0",
+    "native-base": "^2.3.10",
     "geolib": "^2.0.24",
     "google-distance": "^1.0.1",
     "jwt-decode": "^2.2.0",

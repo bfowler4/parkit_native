@@ -1,62 +1,69 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator, SwitchNavigator } from 'react-navigation';
+import { addNavigationHelpers, StackNavigator, TabNavigator, DrawerNavigator, DrawerItems, SwitchNavigator } from 'react-navigation';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+
 
 import LoadingPage from '../LoadingPage';
 import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
+import RegistrationPage from '../RegistrationPage';
+
 import HomePark from '../ParkHomePage';
 import ReqPark from '../RequestParking';
-import RegistrationPage from '../RegistrationPage';
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
-
+import LogoutPage from '../LogoutPage';
 
 import { addListener } from '../../utilities/redux';
 
-const AppStack = StackNavigator(
-  {
-    RolePick: {
-      screen: RolePick
-    },
-    ParkHome: {
-      screen: HomePark
-    },
+const customDrawerContentComponent = (props) => (
+  <View style={{ flex: 1 }}>
+    <Image 
+      style={styles.drawerImage}
+      source={require('../../.././assetts/ParkItLogoNavbar.png')} />
+    <DrawerItems { ...props } />
+  </View>
+);
 
-    ReviewPark: {
-      screen: ReqPark
-    }
-  }, 
+const unAuthDrawer = DrawerNavigator(
   {
-    initialRouteName: `RolePick`
+    Home: { screen: HomePage },
+    Login: { screen: LoginPage },
+    Register: { screen: RegistrationPage }
+  }, {
+    initialRouteName: `Home`,
+    contentComponent: customDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
   }
 );
 
-const AuthStack = StackNavigator(
+const authDrawer = DrawerNavigator(
   {
-    Home: {
-      screen: HomePage
-    },
-    Login: {
-      screen: LoginPage
-    },
-    Register: {
-      screen: RegistrationPage
-    }
-  }, 
-  {
-    initialRouteName: `Home`
+    RolePick: { screen: RolePick },
+    ParkHome: { screen: HomePark },
+    ReviewPark: { screen: ReqPark },
+    Logout: { screen: LogoutPage }
+  }, {
+    initialRouteName: 'RolePick',
+    contentComponent: customDrawerContentComponent,
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
   }
 );
 
 export const AppNavigator = SwitchNavigator(
   {
     Loading: LoadingPage,
-    App: AppStack,
-    Auth: AuthStack
+    App: authDrawer,
+    Auth: unAuthDrawer
   },
   {
-    initialRouteName: `Loading`
+    initialRouteName: `Loading`,
+    headerMode: `none`
   }
 );
 
@@ -65,11 +72,11 @@ class AppWithNavigationState extends React.Component {
     const { dispatch, nav } = this.props;
     return (
       <AppNavigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: nav,
-          addListener,
-        })}
+      navigation={addNavigationHelpers({
+        dispatch,
+        state: nav,
+        addListener,
+      })}
       />
     );
   }
@@ -78,5 +85,12 @@ class AppWithNavigationState extends React.Component {
 const mapStateToProps = state => ({
   nav: state.nav,
 });
+
+styles = StyleSheet.create({
+  drawerImage: {
+    height: 100,
+    width: 280
+  }
+})
 
 export default connect(mapStateToProps)(AppWithNavigationState);

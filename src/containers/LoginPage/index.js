@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, KeyboardAvoidingView } from 'react-native';
+
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Image, KeyboardAvoidingView } from 'react-native';
 import { FontAwesome, Entypo } from '@expo/vector-icons';
 
+import Container from '../../components/container';
 import { login } from '../../actions/authentication';
 
 
@@ -16,6 +18,12 @@ class LoginPage extends Component {
     }
   }
 
+  static navigationOptions = {
+    drawerIcon: (
+      <Image source={require('../../.././assetts/Login.png')}
+        style={{ height: 24, width: 24 }} />
+    )
+  }
   handleSubmit() {
     const {
       email,
@@ -23,34 +31,38 @@ class LoginPage extends Component {
     } = this.state;
     this.props.login(email, password);
   }
-  
+
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior='padding'>
-        <View style={styles.inputSection}>
-          <FontAwesome name='user' size={20} style={styles.icon} color='black' />
-          <TextInput
-            style={styles.input}  
-            placeholder='Email'
-            autoCorrect={false}
-            autoCapitalize={'none'}
-            onChangeText={(email) => this.setState({ email })}/>
+      <Container navigation={this.props.navigation}>
+        <View style={styles.container}>
+          <KeyboardAvoidingView style={styles.container} behavior='padding'>
+            <View style={styles.inputSection}>
+              <FontAwesome name='user' size={20} style={styles.icon} color='black' />
+              <TextInput
+                style={styles.input}
+                placeholder='Email'
+                autoCorrect={false}
+                autoCapitalize={'none'}
+                onChangeText={(email) => this.setState({ email })} />
+            </View>
+            <View style={styles.inputSection}>
+              <Entypo name='key' size={20} style={styles.icon} color='black' />
+              <TextInput
+                style={{ flex: 1 }}
+                placeholder='Password'
+                autoCorrect={false}
+                secureTextEntry={true}
+                onChangeText={(password) => this.setState({ password })} />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handleSubmit.bind(this)}>
+              <Text>Login</Text>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
         </View>
-        <View style={styles.inputSection}>
-          <Entypo name='key' size={20} style={styles.icon} color='black' />
-          <TextInput
-            style={{ flex: 1 }} 
-            placeholder='Password' 
-            autoCorrect={false}
-            secureTextEntry={true}
-            onChangeText={(password) => this.setState({ password })}/>
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.handleSubmit.bind(this)}>
-          <Text>Login</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </Container>
     );
   }
 }
@@ -76,9 +88,9 @@ export default ConnectedLoginPage = connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEBEB',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: `#EBEBEB`
   },
   inputSection: {
     flexDirection: 'row',
