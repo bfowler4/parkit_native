@@ -1,8 +1,9 @@
-import {SPACE_REQUEST} from '../actions/parkAction'
-import {CUSTOMER_COORS} from '../actions/parkAction'
+import {SPACE_REQUEST,CUSTOMER_COORS,RESERVE_SPACE} from '../actions/parkAction'
+
 initialState = {
   space:null,
-  customerCoors:null
+  customerCoors:null,
+  reservedStall:null,
 }
 
 export default (state = initialState, action = {}) =>{
@@ -12,6 +13,8 @@ export default (state = initialState, action = {}) =>{
     return {...state, space:action.payload}
     case CUSTOMER_COORS:
     return {...state, customerCoors:action.payload}
+    case RESERVE_SPACE:
+    return {...state, reservedStall:action.payload}
     default:
     return state;
   }

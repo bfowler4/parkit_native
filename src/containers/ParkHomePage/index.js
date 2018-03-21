@@ -85,6 +85,7 @@ class HomePark extends Component {
               }
             }
             onPress={(data, details = null) => {
+             
               // 'details' is provided when fetchDetails = true
               this.setState({
                 lat: details.geometry.location.lat,
@@ -98,7 +99,7 @@ class HomePark extends Component {
               console.log(this.state);
             }}
             query={{
-              key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
+              key: "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU",
               language: "en", // language of the results
               types: "geocode" // default: 'geocode'
             }}
