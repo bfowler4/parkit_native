@@ -19,6 +19,11 @@ class HomePage extends Component {
           onPress={() => this.props.navigation.navigate(`Register`)}>
           <Text>Sign Up</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.navigation.navigate(`HomePark`)}>
+          <Text>Map</Text>
+        </TouchableOpacity>
       </View>
     );
   }
