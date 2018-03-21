@@ -145,9 +145,12 @@ class ReqPark extends Component {
           )}
         </MapView>
 				<View>
-					
-
+					<View >
+						<Text>{`${distanceMiles} miles`}</Text>
+						<Text>{`${duration} minutes to destination`}</Text>
+					</View>
 				</View>
+
       </View>
     );
   }

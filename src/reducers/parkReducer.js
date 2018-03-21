@@ -11,7 +11,6 @@ export default (state = initialState, action = {}) =>{
    
     return {...state, space:action.payload}
     case CUSTOMER_COORS:
-    console.log(action.payload);
     return {...state, customerCoors:action.payload}
     default:
     return state;
