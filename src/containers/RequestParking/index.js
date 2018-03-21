@@ -6,13 +6,15 @@ import {
   StyleSheet,
   Alert,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
-import { Constants, MapView } from "expo";
+import { Constants, MapView, Marker} from "expo";
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
 import Axios from "axios";
+import {reserveSpace} from '../../actions/parkAction'
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
@@ -21,7 +23,7 @@ const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const GOOGLE_MAPS_APIKEY = "AIzaSyAQ2u55pz05mQhaCKQiax4VQnTKK3UMJnI";
+const GOOGLE_MAPS_APIKEY = "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU";
 
 class ReqPark extends Component {
   constructor(props) {
@@ -41,11 +43,14 @@ class ReqPark extends Component {
 			toggle:null,
       isReady: null,
       distance: null,
+      end_time:1521694911520,
     };
 
     this.mapView = null;
 	}
-	
+  componentDidMount(){
+    
+  }
 	
 			componentWillReceiveProps(nextProps){
 				
@@ -88,7 +93,12 @@ class ReqPark extends Component {
     Alert.alert(errorMessage);
   };
 
+  handleSubmit() {
+    console.log(distanceMiles)
+  }
+
   render() {
+    console.log(this.props)
     if (!this.state.distance) {
       return (
         <View
@@ -97,7 +107,8 @@ class ReqPark extends Component {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
-		}
+    }
+    console.log(this.props.space)
 
 		//<---------------do work here
 
@@ -110,18 +121,21 @@ class ReqPark extends Component {
 			latitude: 21.296923,
 			longitude: -157.822839
 		};
-		let distanceMiles = Number(this.state.distance.data.rows[0].elements[0].distance.text.replace(/[^0-9\.]+/g,""));
-		let duration = parseInt(this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]);
+		let distanceMiles = this.state.distance.data.rows[0].elements[0].distance.text;
+    let duration = parseInt(this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]);
+    let convertUnix = (duration+5)*60;
+    let start_time = new Date().getTime() + convertUnix;
+    let user_id = this.props.space.user_id;
+    let space_id = this.props.space.id;
+    let time_requested = new Date().getTime();
+   
+    // reserverSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
 
-		
-
-		
-		
-		
-
+    
 
     return (
       <View style={styles.container}>
+      
         <MapView
           initialRegion={{
           	latitude: this.props.space.latitude,
@@ -143,12 +157,31 @@ class ReqPark extends Component {
               onError={this.onError}
             />
           )}
+
+          <MapView.Marker
+            coordinate={customer}
+          />
+            <MapView.Marker
+            coordinate={space}
+          />
+
+          
         </MapView>
+
 				<View>
 					<View >
-						<Text>{`${distanceMiles} miles`}</Text>
+						<Text>{`${distanceMiles}`}</Text>
 						<Text>{`${duration} minutes to destination`}</Text>
+            <Text>{`Start ${start_time} End ${this.state.end_time}`}</Text>
 					</View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              this.props.reserveSpace(user_id,space_id,time_requested,start_time, this.state.end_time)
+            }}
+          >
+            <Text>Submit</Text>
+          </TouchableOpacity>
 				</View>
 
       </View>
@@ -163,8 +196,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "#ecf0f1"
+  },
+  button: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    height: 40,
+    margin: 9,
+    width: 200,
+    borderColor: `black`,
+    borderWidth: 1,
+    borderStyle: `solid`,
+    borderRadius: 5,
+    backgroundColor: "grey",
+    zIndex:100
   }
 });
+
 
 const mapStateToProps = state => {
   return {
@@ -174,7 +221,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    reserveSpace: (user,space,requested,start,end) => {
+      dispatch(reserveSpace(user,space,requested,start,end));
+    }
+  };
 };
 
 export default (ConnectedLoginPage = connect(
