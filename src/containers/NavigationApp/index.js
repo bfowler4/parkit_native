@@ -11,6 +11,7 @@ import RegistrationPage from '../RegistrationPage';
 
 import HomePark from '../ParkHomePage';
 import ReqPark from '../RequestParking';
+import ConfirmPark from '../ConfirmationPage'
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
 import LogoutPage from '../LogoutPage';
@@ -45,6 +46,7 @@ const authDrawer = DrawerNavigator(
     RolePick: { screen: RolePick },
     ParkHome: { screen: HomePark },
     ReviewPark: { screen: ReqPark },
+    ConfirmPark: {screen: ConfirmPark},
     Logout: { screen: LogoutPage }
   }, {
     initialRouteName: 'RolePick',

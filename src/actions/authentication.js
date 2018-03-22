@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
-const HOST = `http://f27be075.ngrok.io/api`;
+const HOST = `http://localhost:8080/api`;
 
 export const SET_USER = `SET_USER`;
 export const SET_TOKEN = `SET_TOKEN`;
@@ -29,7 +29,7 @@ export const register = (name, email, password) => {
       });
     })
     .catch(err => {
-      console.log(err.message);
+      (err.message);
     });
   }
 }

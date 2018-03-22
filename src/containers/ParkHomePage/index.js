@@ -14,8 +14,8 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
 import Dimensions from "Dimensions";
-
 import Container from '../../components/container';
+import ReqPark from '../RequestParking';
 
 class HomePark extends Component {
   constructor(props) {
@@ -64,10 +64,11 @@ class HomePark extends Component {
       ? this.props.customercoors(this.state.location.coords)
       : console.log("no location");
 
-    this.props.navigation.navigate("ReviewPark");
+    this.props.navigation.navigate("ReviewPark", {state:this.state});
   }
 
   render() {
+    
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
 

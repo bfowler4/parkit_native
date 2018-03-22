@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   View,
   Text,
@@ -10,24 +10,17 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Constants, MapView, Marker } from "expo";
+import Axios from "axios";
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
-import Axios from "axios";
-import { reserveSpace } from "../../actions/parkAction";
-
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
 const GOOGLE_MAPS_APIKEY = "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU";
 
-class ReqPark extends Component {
-  static navigationOptions = {
-    drawerLabel: () => null
-  }
-
+class ConfirmPark extends Component {
   constructor(props) {
     super(props);
 
@@ -42,25 +35,10 @@ class ReqPark extends Component {
           longitude: -157.822839
         }
       ],
-      toggle: null,
-      isReady: null,
       distance: null,
-      end_time: 1521694911520
     };
 
     this.mapView = null;
-  }
-  componentDidMount() {
-    {
-      setTimeout(function() {
-        onTimeOut();
-      }, 60000);
-    }
-
-    onTimeOut = () => {
-      this.setState({ isReady: true });
-      console.log("state changed", this.state.isReady);
-    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +66,6 @@ class ReqPark extends Component {
     }
   }
 
-
   onReady = result => {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -100,15 +77,16 @@ class ReqPark extends Component {
     });
   };
 
- 
   onError = errorMessage => {
     Alert.alert(errorMessage);
   };
 
 
-  render() {
-
- 
+  
+  
+  
+  render(){
+    console.log(this.props)
     if (!this.state.distance) {
       return (
         <View
@@ -128,37 +106,11 @@ class ReqPark extends Component {
       latitude: 21.296923,
       longitude: -157.822839
     };
-    let distanceMiles = this.state.distance.data.rows[0].elements[0].distance
-      .text;
-    let duration = parseInt(
-      this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
-    );
-    let convertUnix = (duration + 5) * 60;
-    let start_time = new Date().getTime() + convertUnix;
-    let user_id = this.props.space.user_id;
-    let space_id = this.props.space.id;
-    let time_requested = new Date().getTime();
-
-
-    return (
-      <View style={styles.container}>
-        {this.state.isReady
-          ? Alert.alert(
-              "Timed Out",
-              "Sorrry caaaaaaaz",
-              [
-                {
-                  text: "Parking Page",
-                  onPress: () => {
-                    this.props.navigation.navigate(`ParkHome`);
-                    this.setState({isReady:null})
-                  }
-                }
-              ],
-              { cancelable: false }
-            )
-          : false}
-        <MapView
+    
+    
+     return(
+     <View style={{flex:1}}>  
+      <MapView
           initialRegion={{
             latitude: this.props.space.latitude,
             longitude: this.props.space.longitude,
@@ -183,78 +135,43 @@ class ReqPark extends Component {
           <MapView.Marker coordinate={customer} />
           <MapView.Marker coordinate={space} />
         </MapView>
-
-        <View style={{flex:0.4, justifyContent:'center',alignContent:'center',
-        backgroundColor: "black"
-      }}>
-          <View style={{flex:0.8,justifyContent:'center',alignContent:'center',
-          backgroundColor: "white",
-          borderRadius: 5,
-          alignSelf: "center",
-          margin: 15,
-        }}>
-              <Text style={{alignSelf: "center"}}>{`${distanceMiles}`}</Text>
-              <Text style={{alignSelf: "center"}}>{`${duration} minutes to destination`}</Text>
-              <Text style={{alignSelf: "center"}}>{`Start ${start_time} End ${this.state.end_time}`}</Text>
-            
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                this.props.reserveSpace(
-                  user_id,
-                  space_id,
-                  time_requested,
-                  start_time,
-                  this.state.end_time
-                );
-                this.props.navigation.navigate("ConfirmPark");
-              }}
-            >
-              <Text>Submit</Text>
-            </TouchableOpacity>
+        <View style={{flex:0.5,justifyContent:'center', alignContent:'center',backgroundColor:'black'}}>
+          <View style={{flex:0.8,justifyContent:'center',alignContent:'center',backgroundColor:'white',borderRadius:10}}>
+            <Text>{`${this.props.reservation.end_time}`}</Text>
+            <Text>PRICE</Text>
+            <Text>{this.props.space.latitude}</Text>
           </View>
         </View>
-      </View>
-    );
+     </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  button: {
-    justifyContent: `center`,
-    alignItems: `center`,
-    height: 40,
-    margin: 9,
-    width: 200,
-    borderColor: `black`,
-    borderWidth: 1,
-    borderStyle: `solid`,
-    borderRadius: 5,
-    backgroundColor: "hotpink",
-    zIndex: 100,
-    alignSelf: "center"
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#ecf0f1"
   }
 });
 
 const mapStateToProps = state => {
+ 
   return {
     space: state.park.space,
-    customer: state.park.customerCoors
+    reservation:state.park.reservedStall
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    reserveSpace: (user, space, requested, start, end) => {
-      dispatch(reserveSpace(user, space, requested, start, end));
-    }
-  };
+  return {};
 };
 
 export default (ConnectedLoginPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReqPark));
+)(ConfirmPark));
+
+
