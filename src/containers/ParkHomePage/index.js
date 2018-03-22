@@ -88,139 +88,152 @@ class HomePark extends Component {
   render() {
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
-    
+
     return (
       <Container navigation={this.props.navigation}>
-      <View style={{ flex: 1 }}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert('Modal has been closed.');
-          }}>
-          <GooglePlacesAutocomplete
-            placeholder="Enter Location"
-            minLength={2}
-            autoFocus={false}
-            returnKeyType={"default"}
-            fetchDetails={true}
-            // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-            GoogleReverseGeocodingQuery={
-              {
-                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-              }
-            }
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              this.setState({
-                lat: details.geometry.location.lat,
-                lng: details.geometry.location.lng
-              });
-              this.setState({
-                targLat: details.geometry.location.lat,
-                targLng: details.geometry.location.lng
-              });
-              this.setState({ key: Math.random() });
-              console.log(this.state);
+        <View style={{ flex: 1 }}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              alert('Modal has been closed.');
+            }}>
+            <View style={{ flex: 1 }}>
+              <GooglePlacesAutocomplete
+                placeholder="Enter Location"
+                minLength={2}
+                autoFocus={false}
+                returnKeyType={"default"}
+                fetchDetails={true}
+                // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                GoogleReverseGeocodingQuery={
+                  {
+                    // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                  }
+                }
+                onPress={(data, details = null) => {
+                  // 'details' is provided when fetchDetails = true
+                  this.setState({
+                    lat: details.geometry.location.lat,
+                    lng: details.geometry.location.lng
+                  });
+                  this.setState({
+                    targLat: details.geometry.location.lat,
+                    targLng: details.geometry.location.lng
+                  });
+                  this.setState({ key: Math.random() });
+                }}
+                query={{
+                  key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
+                  language: "en", // language of the results
+                  types: "geocode" // default: 'geocode'
+                }}
+                styles={{
+                  textInputContainer: {
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0,
+                    backgroundColor: `white`
+                  },
+                  listView: {
+                  },
+                  textInput: {
+                    height: 38,
+                    color: "#5d5d5d",
+                    fontSize: 16,
+                    borderWidth: 0
+                  },
+                  predefinedPlacesDescription: {
+                    color: "#1faadb"
+                  },
+                  poweredContainer: {
+                    height: 0
+                  },
+                  powered: {
+                    height: 0
+                  }
+                }}
+              />
+            </View>
+            <View style={{ display: 'flex', marginBottom: 50 }}>
+              <DatePickerIOS
+                date={this.state.chosenDate}
+                onDateChange={this.setDate}
+                minimumDate={new Date(new Date().getTime() + 3600000)}
+                maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
+              />
+            </View>
+            <View style={{ display: 'flex', marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
+              <TouchableHighlight
+                style={styles.button}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>SUBMIT</Text>
+              </TouchableHighlight>
+            </View>
+          </Modal>
+          <TouchableHighlight
+            style={{ 
+              position: `absolute`, 
+              top: '10%', 
+              zIndex: 100000, 
+              width: screenWidth * .85, 
+              alignSelf: `center`,
+              shadowColor: `black`,
+              shadowOffset: { width: 5, height: 5 },
+              shadowRadius: 10,
+              shadowOpacity: .5
+
             }}
-            query={{
-              key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
-              language: "en", // language of the results
-              types: "geocode" // default: 'geocode'
+            onPress={() => {
+              this.setModalVisible(true);
+            }}>
+            <Text style={{
+              height: 10,
+              paddingLeft: 10,
+              marginLeft: 0,
+              marginRight: 0,
+              height: 38,
+              color: "#5d5d5d",
+              backgroundColor: 'white',
+              fontSize: 16,
+              borderWidth: 0
+            }}>Enter Location</Text>
+          </TouchableHighlight>
+          <MapView
+            style={{ flex: 1 }}
+            key={this.state.key}
+            showsUserLocation={true}
+            followUserLocation={true}
+            onRegionChange={this.onRegionChange.bind(this)}
+            initialRegion={{
+              latitude: this.state.lat,
+              longitude: this.state.lng,
+              latitudeDelta: 0.05 * (screenWidth / screenHeight),
+              longitudeDelta: 0.05 * (screenWidth / screenHeight)
             }}
-            styles={{
-              textInputContainer: {
-                flex: 1,
-                paddingTop: 50,
-                backgroundColor: "rgba(0,0,0,0)",
-                borderTopWidth: 0,
-                borderBottomWidth: 0
-              },
-              listView: {
-                backgroundColor: 'white',
-                bottom: 100
-              },
-              textInput: {
-                marginLeft: 0,
-                marginRight: 0,
-                height: 38,
-                color: "#5d5d5d",
-                fontSize: 16,
-                borderWidth: 0
-              },
-              predefinedPlacesDescription: {
-                color: "#1faadb"
-              }
-            }}
-          />
-          <View style={{ display: 'flex', marginBottom: 80 }}>
-            <DatePickerIOS
-              date={this.state.chosenDate}
-              onDateChange={this.setDate}
-              minimumDate={new Date(new Date().getTime() + 3600000)}
-              maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
-            />
-          </View>
-          <View style={{ display: 'flex', marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
-            <TouchableHighlight
+            followUserLocation={true}>
+            <MapView.Marker
+              coordinate={{
+                latitude: this.state.targLat,
+                longitude: this.state.targLng
+              }} />
+          </MapView>
+          <View
+            style={{
+              flex: 0,
+              justifyContent: `center`,
+              alignItems: `center`,
+              backgroundColor: "white"
+            }}>
+            <TouchableOpacity
               style={styles.button}
-              onPress={() => {
-                this.setModalVisible(!this.state.modalVisible);
-              }}>
-              <Text>SUBMIT</Text>
-            </TouchableHighlight>
+              onPress={this.handleSubmit.bind(this)}>
+              <Text>Submit</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-        <TouchableHighlight
-          onPress={() => {
-            this.setModalVisible(true);
-          }}>
-          <Text style={{
-            height: 10,
-            paddingLeft: 10,
-            marginLeft: 0,
-            marginRight: 0,
-            height: 38,
-            color: "#5d5d5d",
-            backgroundColor: 'white',
-            fontSize: 16,
-            borderWidth: 0
-          }}>Enter Location</Text>
-        </TouchableHighlight>
-        <MapView
-          style={{ flex: 1 }}
-          key={this.state.key}
-          showsUserLocation={true}
-          followUserLocation={true}
-          onRegionChange={this.onRegionChange.bind(this)}
-          initialRegion={{
-            latitude: this.state.lat,
-            longitude: this.state.lng,
-            latitudeDelta: 0.05 * (screenWidth / screenHeight),
-            longitudeDelta: 0.05 * (screenWidth / screenHeight)
-          }}
-          followUserLocation={true}>
-          <MapView.Marker
-            coordinate={{
-              latitude: this.state.targLat,
-              longitude: this.state.targLng
-            }} />
-        </MapView>
-        <View
-          style={{
-            flex: 0,
-            justifyContent: `center`,
-            alignItems: `center`,
-            backgroundColor: "white"
-          }}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.handleSubmit.bind(this)}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
         </View>
-      </View>
       </Container>
     );
   }

@@ -49,7 +49,7 @@ const authDrawer = DrawerNavigator(
     ReviewPark: { screen: ReqPark },
     Logout: { screen: LogoutPage }
   }, {
-    initialRouteName: 'Payment',
+    initialRouteName: 'ParkHome',
     contentComponent: customDrawerContentComponent,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',

@@ -11,7 +11,10 @@ class PaymentPage extends Component {
     super(props);
 
     this.state = {
-      cardNumber: ``
+      cardNumber: ``,
+      expiration: ``,
+      cvv: ``,
+      zipcode: ``
     }
   }
 
@@ -20,25 +23,58 @@ class PaymentPage extends Component {
       <Container navigation={this.props.navigation}>
         <View style={styles.container}>
           <View style={styles.paymentContainer}>
-            <Text style={styles.header}>Payment Method</Text>
-            <FloatingLabelInput
-              label='Card Number'
-              value={this.state.cardNumber}
-              keyboardType='numeric'
-              onChangeText={number => {
-                const length = number.length;
-                if (length < this.state.cardNumber.length) {
-                  if (number === this.state.cardNumber.trim() && number.charAt(length - 1 !== ` `)) {
-                    return this.setState({ cardNumber: number.slice(0, -1) });
-                  }
+          <Text style={styles.header}>Payment Method</Text>
+          <FloatingLabelInput
+            label='Card Number'
+            value={this.state.cardNumber}
+            keyboardType='numeric'
+            maxLength={19}
+            onChangeText={number => {
+              const length = number.length;
+              if (length < this.state.cardNumber.length) {
+                if (number === this.state.cardNumber.trim() && number.charAt(length - 1 !== ` `)) {
+                  return this.setState({ cardNumber: number.slice(0, -1) });
                 }
-                if (length === 4 || length === 9 || length === 14) {
-                  number = `${number} `;
-                }
-                this.setState({ cardNumber: number }) }} />
-            <TouchableOpacity style={styles.button}>
-              <Text style={{ color: `white` }}>Submit</Text>
-            </TouchableOpacity>
+              }
+              if (length === 4 || length === 9 || length === 14) {
+                number = `${number} `;
+              }
+              this.setState({ cardNumber: number })
+            }} />
+          <FloatingLabelInput
+            label='Exp. Date'
+            value={this.state.expiration}
+            keyboardType='numeric'
+            maxLength={5}
+            onChangeText={date => {
+              const length = date.length;
+              if (length < this.state.expiration.length) {
+                return this.setState({ expiration: date });
+              }
+              if (length === 1 && date !== `0` && date !== `1`) {
+                return this.setState({ expiration: `0${date}/` });
+              }
+              if (length === 2) {
+                return this.setState({ expiration: `${date}/` });
+              }
+              this.setState({ expiration: date });
+
+            }} />
+          <FloatingLabelInput
+            label='CVV'
+            value={this.state.cvv}
+            keyboardType='numeric'
+            maxLength={this.state.cardNumber.startsWith(`3`) ? 4 : 3}
+            onChangeText={number => this.setState({ cvv: number })} />
+          <FloatingLabelInput
+            label='Zip Code'
+            value={this.state.zipcode}
+            keyboardType='numeric'
+            maxLength={5}
+            onChangeText={number => this.setState({ zipcode: number })} />
+          <TouchableOpacity style={styles.button}>
+            <Text style={{ color: `white` }}>Submit</Text>
+          </TouchableOpacity>
           </View>
         </View>
       </Container>
@@ -70,12 +106,13 @@ const styles = StyleSheet.create({
     backgroundColor: `#EBEBEB`
   },
   paymentContainer: {
+    flex: 1,
     justifyContent: `center`,
     alignItems: `center`,
     width: '85%',
-    height: '60%',
+    maxHeight: `50%`,
     backgroundColor: `white`,
-    borderRadius: 18
+    borderRadius: 18,
   },
   header: {
     position: `absolute`,
@@ -84,14 +121,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
     fontSize: 30
-  },
-  input: {
-    width: '80%',
-    paddingVertical: 10,
-    paddingBottom: 10,
-    backgroundColor: `white`,
-    borderWidth: 1,
-    borderRadius: 12
   },
   button: {
     position: `absolute`,

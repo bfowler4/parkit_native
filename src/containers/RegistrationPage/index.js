@@ -41,7 +41,7 @@ class RegistrationPage extends Component {
           <View style={styles.inputSection}>
             <FontAwesome name='user' size={20} style={styles.icon} color='black' />
             <TextInput
-              style={styles.input}
+              style={{ flex: 1 }}
               placeholder='Full Name'
               autoCorrect={false}
               autoCapitalize={'none'}
@@ -68,7 +68,7 @@ class RegistrationPage extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={this.handleSubmit.bind(this)}>
-            <Text>Sign Up</Text>
+            <Text style={{ color: `lightgrey` }}>Sign Up</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </Container>
@@ -97,7 +97,7 @@ export default ConnectedRegistrationPage = connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEBEB',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -107,9 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     width: '80%',
-    backgroundColor: `white`,
-    borderBottomWidth: 1,
-    borderColor: 1,
+    backgroundColor: `lightgrey`,
     borderRadius: 10,
     marginBottom: 20
   },
@@ -127,9 +125,9 @@ const styles = StyleSheet.create({
     alignItems: `center`,
     height: 40,
     width: 200,
-    borderColor: `black`,
-    borderWidth: 1,
-    borderStyle: `solid`,
-    borderRadius: 5
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: `lightgrey`,
+    backgroundColor: `black`
   }
 });

@@ -9,14 +9,16 @@ import {
 class FloatingLabelInput extends Component {
   state = {
     isFocused: false,
+    borderColor: `#EBEBEB`,
+    borderWidth: 1
   };
 
   componentWillMount() {
     this._animatedIsFocused = new Animated.Value(this.props.value === '' ? 0 : 1);
   }
 
-  handleFocus = () => this.setState({ isFocused: true });
-  handleBlur = () => this.setState({ isFocused: false });
+  handleFocus = () => this.setState({ isFocused: true, borderColor: `black`, borderWidth: 2 });
+  handleBlur = () => this.setState({ isFocused: false, borderColor: `#EBEBEB`, borderWidth: 1 });
 
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
@@ -43,15 +45,23 @@ class FloatingLabelInput extends Component {
         outputRange: ['#aaa', '#000'],
       }),
     };
+    const inputStyle = {
+      height: 40,
+      fontSize: 20,
+      padding: 10,
+      color: `black`,
+      borderBottomColor: this.state.borderColor,
+      borderBottomWidth: this.state.borderWidth
+    }
 
     return (
-      <View style={{ paddingTop: 15, width: `80%` }}>
+      <View style={{ paddingTop: 15, width: '80%' }}>
         <Animated.Text style={labelStyle}>
           {label}
         </Animated.Text>
         <TextInput
           {...props}
-          style={{ height: 40, fontSize: 20, color: 'black', borderBottomWidth: 1, borderBottomColor: 'black', padding: 10 }}
+          style={inputStyle}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           blurOnSubmit
