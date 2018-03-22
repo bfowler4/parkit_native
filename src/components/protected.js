@@ -1,20 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage, DatePickerIOS } from 'react-native';
 
 
 import { logout } from '../actions/authentication';
 import Container from './container';
 
 class Protected extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      chosenDate: new Date()
+    };
+
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate(newDate) {
+    this.setState({ chosenDate: newDate });
+  }
+
   render() {
     return (
       <Container navigation={this.props.navigation}>
-        <View style={{ flex: 1 }}>
-          <Text>Hello from protected</Text>
-          <TouchableOpacity style={styles.button} onPress={this.props.logout}>
-            <Text>Logout</Text>
-          </TouchableOpacity>
+        <View style={{ flex: 1, backgroundColor: `red` }}>
+        </View>
+        <View style={{ flex: 1, justifyContent: `flex-end` }}>
+          <DatePickerIOS
+            date={this.state.chosenDate}
+            onDateChange={this.setDate} 
+            minimumDate={new Date(new Date().getTime() + 3600000)}
+            maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
+            minuteInterval={5}
+            mode='time' />
         </View>
       </Container>
     );
