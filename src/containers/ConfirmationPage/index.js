@@ -14,6 +14,7 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
+import Container from '../../components/container';
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -86,7 +87,7 @@ class ConfirmPark extends Component {
   
   
   render(){
-    console.log(this.props)
+   
     if (!this.state.distance) {
       return (
         <View
@@ -106,9 +107,13 @@ class ConfirmPark extends Component {
       latitude: 21.296923,
       longitude: -157.822839
     };
-    
-    
+    let startTime = new Date(this.props.reservation.reservedStall.start_time).toLocaleTimeString();
+    let endTime = new Date(this.props.reservation.reservedStall.end_time).toLocaleTimeString();
+    let address = this.props.address.space.address;
+    let description = this.props.space.description;
+    let price = this.props.address.price;
      return(
+    <Container navigation={this.props.navigation}>  
      <View style={{flex:1}}>  
       <MapView
           initialRegion={{
@@ -137,12 +142,16 @@ class ConfirmPark extends Component {
         </MapView>
         <View style={{flex:0.5,justifyContent:'center', alignContent:'center',backgroundColor:'black'}}>
           <View style={{flex:0.8,justifyContent:'center',alignContent:'center',backgroundColor:'white',borderRadius:10}}>
-            <Text>{`${this.props.reservation.end_time}`}</Text>
-            <Text>PRICE</Text>
-            <Text>{this.props.space.latitude}</Text>
+            
+            <Text>{`Price: ${price}`}</Text>
+            <Text>{`start time:${startTime} end time:${endTime}`}</Text>
+            <Text>{`${address.street} ${address.city} ${address.state}`}</Text>
+            <Text>{`Instructions: ${description}`}</Text>
+
           </View>
         </View>
      </View>
+     </Container>
     )
   }
 }
@@ -158,10 +167,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
- 
+  
   return {
     space: state.park.space,
-    reservation:state.park.reservedStall
+    reservation:state.park,
+    address:state.park.reservedStall
   };
 };
 

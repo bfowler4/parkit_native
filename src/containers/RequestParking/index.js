@@ -15,7 +15,7 @@ import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
 import Axios from "axios";
 import { reserveSpace } from "../../actions/parkAction";
-
+import Container from '../../components/container';
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -45,7 +45,6 @@ class ReqPark extends Component {
       toggle: null,
       isReady: null,
       distance: null,
-      end_time: 1521694911520
     };
 
     this.mapView = null;
@@ -59,7 +58,7 @@ class ReqPark extends Component {
 
     onTimeOut = () => {
       this.setState({ isReady: true });
-      console.log("state changed", this.state.isReady);
+    
     };
   }
 
@@ -107,7 +106,8 @@ class ReqPark extends Component {
 
 
   render() {
-
+   this.props.navigation.state.params.state.chosenDate.getTime()
+     
  
     if (!this.state.distance) {
       return (
@@ -133,14 +133,19 @@ class ReqPark extends Component {
     let duration = parseInt(
       this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
     );
-    let convertUnix = (duration + 5) * 60;
+    
+    let convertUnix = (duration + 5) * 60*1000;
+    
     let start_time = new Date().getTime() + convertUnix;
-    let user_id = this.props.space.user_id;
+    let end_time = this.props.navigation.state.params.state.chosenDate.getTime();
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
+    
+
 
     return (
+      <Container navigation={this.props.navigation}>
       <View style={styles.container}>
         {this.state.isReady
           ? Alert.alert(
@@ -195,17 +200,16 @@ class ReqPark extends Component {
         }}>
               <Text style={{alignSelf: "center"}}>{`${distanceMiles}`}</Text>
               <Text style={{alignSelf: "center"}}>{`${duration} minutes to destination`}</Text>
-              <Text style={{alignSelf: "center"}}>{`Start ${start_time} End ${this.state.end_time}`}</Text>
+              <Text style={{alignSelf: "center"}}>{`Start ${start_time} End ${end_time}`}</Text>
             
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 this.props.reserveSpace(
-                  user_id,
                   space_id,
                   time_requested,
                   start_time,
-                  this.state.end_time
+                  end_time
                 );
                 this.props.navigation.navigate("ConfirmPark");
               }}
@@ -215,6 +219,7 @@ class ReqPark extends Component {
           </View>
         </View>
       </View>
+      </Container>
     );
   }
 }
@@ -240,6 +245,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
+  console.log(state)
   return {
     space: state.park.space,
     customer: state.park.customerCoors
