@@ -50,16 +50,16 @@ class ReqPark extends Component {
     this.mapView = null;
   }
   componentDidMount() {
-    {
-      setTimeout(function() {
-        onTimeOut();
-      }, 60000);
-    }
+    // {
+    //   setTimeout(function() {
+    //     onTimeOut();
+    //   }, 60000);
+    // }
 
-    onTimeOut = () => {
-      this.setState({ isReady: true });
+    // onTimeOut = () => {
+    //   this.setState({ isReady: true });
     
-    };
+    // };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -188,20 +188,23 @@ class ReqPark extends Component {
           <MapView.Marker coordinate={customer} />
           <MapView.Marker coordinate={space} />
         </MapView>
+        <View style={{height:'3%', backgroundColor:'#7fbcac'}}>
 
+        </View>
         <View style={{flex:0.4, justifyContent:'center',alignContent:'center',
-        backgroundColor: "black"
+        backgroundColor: "#98d2c1"
       }}>
           <View style={{flex:0.8,justifyContent:'center',alignContent:'center',
-          backgroundColor: "white",
+          backgroundColor: "AliceBlue",
           borderRadius: 5,
           alignSelf: "center",
           margin: 15,
         }}>
-              <Text style={{alignSelf: "center"}}>{`${distanceMiles}`}</Text>
-              <Text style={{alignSelf: "center"}}>{`${duration} minutes to destination`}</Text>
-              <Text style={{alignSelf: "center"}}>{`Start ${start_time} End ${end_time}`}</Text>
-            
+            <View style={{backgroundColor:'white'}}>
+              <Text style={styles.text}>{`${distanceMiles}`}</Text>
+              <Text style={styles.text}>{`${duration} minutes to destination`}</Text>
+              <Text style={styles.text}>{`Start ${start_time} End ${end_time}`}</Text>
+             </View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
@@ -214,7 +217,7 @@ class ReqPark extends Component {
                 this.props.navigation.navigate("ConfirmPark");
               }}
             >
-              <Text>Submit</Text>
+              <Text style={{color:'white',fontWeight:'bold'}}>Submit</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -229,6 +232,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
+    
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
@@ -238,9 +242,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: `solid`,
     borderRadius: 5,
-    backgroundColor: "hotpink",
+    backgroundColor: "#7fbcac",
     zIndex: 100,
     alignSelf: "center"
+  },
+  text: {
+    
+    color:'black',
+    fontWeight:'bold'
   }
 });
 

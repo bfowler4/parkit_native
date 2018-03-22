@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTIxNjk5MjMxfQ.oH3HQi0BACY-1OWsN-_NWPkIGMTaZ5CtyYgJx1oz6eA";
 const REQUEST = `http://a2ef8a84.ngrok.io/api/spaces/request`;
+import { NavigationActions } from 'react-navigation';
 export const SPACE_REQUEST = "SPACE_REQUEST";
 export const CUSTOMER_COORS = "REQUEST_INFO";
 export const RESERVE_SPACE = "RESERVE_SPACE";
@@ -37,9 +38,11 @@ export const spaceRequest = (lat, lng) => {
             {
               text: "Home",
               onPress: () => {
-                this.props.navigation.navigate(`ParkHome`);
-
-              }
+                const redirect = NavigationActions.navigate({
+                  routeName: `ParkHome`
+                });
+                dispatch(redirect);
+             }
             }
           ],
           { cancelable: false }

@@ -76,7 +76,7 @@ class HomePark extends Component {
     this.setState({ targLat: region.latitude, targLng: region.longitude });
   }
   handleSubmit() {
-    
+
     this.props.spaceRequest(this.state.targLat, this.state.targLng);
 
     this.state.location
@@ -129,7 +129,7 @@ class HomePark extends Component {
             query={{
               key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
               language: "en", // language of the results
-              types: "geocode" // default: 'geocode'
+              types: ["geocode","establishment"]
             }}
             styles={{
               textInputContainer: {
