@@ -88,7 +88,7 @@ class HomePark extends Component {
   render() {
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
-    
+
     return (
       <Container navigation={this.props.navigation}>
       <View style={{ flex: 1 }}>
@@ -178,6 +178,7 @@ class HomePark extends Component {
           }}>
           <Text style={{
             height: 10,
+            paddingTop: 10,
             paddingLeft: 10,
             marginLeft: 0,
             marginRight: 0,
