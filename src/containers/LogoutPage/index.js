@@ -9,7 +9,6 @@ class LogoutPage extends Component {
   }
 
   render() {
-    AsyncStorage.clear();
     return null;
   }
 }
