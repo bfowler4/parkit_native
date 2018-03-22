@@ -4,16 +4,19 @@ import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-na
 
 
 import { logout } from '../actions/authentication';
+import Container from './container';
 
 class Protected extends Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Text>Hello from protected</Text>
-        <TouchableOpacity style={styles.button} onPress={this.props.logout}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
-      </View>
+      <Container navigation={this.props.navigation}>
+        <View style={{ flex: 1 }}>
+          <Text>Hello from protected</Text>
+          <TouchableOpacity style={styles.button} onPress={this.props.logout}>
+            <Text>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </Container>
     );
   }
 }

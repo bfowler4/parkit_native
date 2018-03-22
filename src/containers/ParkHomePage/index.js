@@ -21,6 +21,8 @@ import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
 import Dimensions from "Dimensions";
 
+import Container from '../../components/container';
+
 class HomePark extends Component {
   constructor(props) {
     super(props);
@@ -86,8 +88,9 @@ class HomePark extends Component {
   render() {
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
-    console.log(this.state.choseDate, 'date')
+    
     return (
+      <Container navigation={this.props.navigation}>
       <View style={{ flex: 1 }}>
         <Modal
           animationType="slide"
@@ -174,8 +177,7 @@ class HomePark extends Component {
             this.setModalVisible(true);
           }}>
           <Text style={{
-            height: 30,
-            paddingTop: 10,
+            height: 10,
             paddingLeft: 10,
             marginLeft: 0,
             marginRight: 0,
@@ -219,13 +221,13 @@ class HomePark extends Component {
           </TouchableOpacity>
         </View>
       </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    // left: 60,
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
