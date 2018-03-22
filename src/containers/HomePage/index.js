@@ -19,7 +19,7 @@ class HomePage extends Component {
     return (
       <Container navigation={this.props.navigation}>
         <View style={styles.container}>
-          <Image source={require('../../.././assetts/ParkItLogo9.png')}
+          <Image source={require('../../.././assetts/ParkItHomePage.png')}
             style={{ height: Dimensions.get(`screen`).height, width: Dimensions.get(`screen`).width, zIndex: -1, position: `absolute` }} />
           <TouchableOpacity
             style={styles.button}
