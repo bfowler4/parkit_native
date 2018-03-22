@@ -22,14 +22,14 @@ class HomePage extends Component {
           <Image source={require('../../.././assetts/ParkItHomePage.png')}
             style={{ height: Dimensions.get(`screen`).height, width: Dimensions.get(`screen`).width, zIndex: -1, position: `absolute` }} />
           <TouchableOpacity
-            style={styles.button}
+            style={styles.button1}
             onPress={() => this.props.navigation.navigate(`Login`)}>
-            <Text>Login</Text>
+            <Text style={{ color: `lightgrey` }}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.button2}
             onPress={() => this.props.navigation.navigate(`Register`)}>
-            <Text>Sign Up</Text>
+            <Text style={{ color: `black` }}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </Container>
@@ -41,18 +41,30 @@ class HomePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    paddingBottom: 50
   },
-  button: {
+  button1: {
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
     margin: 10,
     width: 200,
-    borderColor: `black`,
-    backgroundColor: '#fff',
+    borderColor: `lightgrey`,
+    borderWidth: 2,
+    borderStyle: `solid`,
+    borderRadius: 5
+  },
+  button2: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    height: 40,
+    margin: 10,
+    width: 200,
+    borderColor: `lightgrey`,
+    backgroundColor: `lightgrey`,
     borderWidth: 1,
     borderStyle: `solid`,
     borderRadius: 5
