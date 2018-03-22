@@ -31,7 +31,9 @@ class Protected extends Component {
             date={this.state.chosenDate}
             onDateChange={this.setDate} 
             minimumDate={new Date(new Date().getTime() + 3600000)}
-            maximumDate={new Date(new Date().setHours(23, 59, 59, 0))} />
+            maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
+            minuteInterval={5}
+            mode='time' />
         </View>
       </Container>
     );
