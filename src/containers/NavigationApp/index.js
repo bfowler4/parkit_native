@@ -22,7 +22,7 @@ const customDrawerContentComponent = (props) => (
   <View style={{ flex: 1 }}>
     <Image 
       style={styles.drawerImage}
-      source={require('../../.././assetts/ParkItLogoNavbar.png')} />
+      source={require('../../.././assetts/ParkItNavBar.png')} />
     <DrawerItems { ...props } />
   </View>
 );
