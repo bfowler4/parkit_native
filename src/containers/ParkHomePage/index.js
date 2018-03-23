@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
   Text,
   View,
   Alert,
@@ -34,6 +35,7 @@ class HomePark extends Component {
       targLat: 21.2969,
       targLng: -157.8171,
       location: null,
+      autocomplete:`Enter Location`,
       err: null,
       modalVisible: false,
       chosenDate: new Date(new Date().getTime() + 3600000)
@@ -69,6 +71,8 @@ class HomePark extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
+    this.setState({lat:location.coords.latitude,lng:location.coords.longitude})
+    this.setState({ key: Math.random() });
     this.props.customercoors(location);
   };
 
@@ -87,6 +91,16 @@ class HomePark extends Component {
   }
 
     render() {
+   if(!this.state.location){
+    return (
+      <View
+        style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
+      >
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+   }
+ 
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
 
@@ -114,7 +128,8 @@ class HomePark extends Component {
                   }
                 }
                 onPress={(data, details = null) => {
-                  // 'details' is provided when fetchDetails = true
+                  // 
+                  this.setState({autocomplete:details.formatted_address})
                   this.setState({
                     lat: details.geometry.location.lat,
                     lng: details.geometry.location.lng
@@ -197,7 +212,7 @@ class HomePark extends Component {
               backgroundColor: 'white',
               fontSize: 16,
               borderWidth: 0
-            }}>Enter Location</Text>
+            }}>{this.state.autocomplete}</Text>
           </TouchableHighlight>
           <MapView
             style={{ flex: 1 }}
@@ -254,7 +269,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    space: state.park.space
+    space: state.park.space,
   };
 };
 
