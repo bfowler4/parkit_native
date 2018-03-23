@@ -29,13 +29,13 @@ class RolePick extends Component {
       <Container navigation={this.props.navigation}>
         <View style={styles.container}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.button1}
             value={`park`}
             onPress={this.handleSetPark.bind(this)}>
-            <Text>Park with Parkit</Text>
+            <Text style={{ color: `lightgrey` }}>Park with Parkit</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.button2}
             onPress={this.handleSetHost.bind(this)}>
             <Text>Host with Parkit</Text>
           </TouchableOpacity>
@@ -64,17 +64,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: `center`,
-    alignItems: `center`
+    alignItems: `center`,
+    backgroundColor: `black`
   },
-  button: {
+  button1: {
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
     margin: 9,
     width: 200,
-    borderColor: `black`,
+    borderRadius: 5,
     borderWidth: 1,
-    borderStyle: `solid`,
-    borderRadius: 5
+    borderColor: `lightgrey`
+  },
+  button2: {
+    justifyContent: `center`,
+    alignItems: `center`,
+    height: 40,
+    margin: 9,
+    width: 200,
+    borderRadius: 5,
+    backgroundColor: `lightgrey`
   }
 })

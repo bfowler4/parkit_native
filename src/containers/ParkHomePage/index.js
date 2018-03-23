@@ -24,6 +24,9 @@ import Container from '../../components/container';
 
 
 class HomePark extends Component {
+  static navigationOptions = {
+    drawerLabel: () => 'Find a Space'
+  }
   constructor(props) {
     super(props);
 
