@@ -20,8 +20,8 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
 import Dimensions from "Dimensions";
-
 import Container from '../../components/container';
+
 
 class HomePark extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class HomePark extends Component {
       location: null,
       err: null,
       modalVisible: false,
-      chosenDate: new Date()
+      chosenDate: new Date(new Date().getTime() + 3600000)
     };
     this.setDate = this.setDate.bind(this);
   }
@@ -76,16 +76,17 @@ class HomePark extends Component {
     this.setState({ targLat: region.latitude, targLng: region.longitude });
   }
   handleSubmit() {
+
     this.props.spaceRequest(this.state.targLat, this.state.targLng);
 
     this.state.location
       ? this.props.customercoors(this.state.location.coords)
       : console.log("no location");
 
-    this.props.navigation.navigate("ReviewPark");
+    this.props.navigation.navigate("ReviewPark", {state:this.state});
   }
 
-  render() {
+    render() {
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
 
@@ -126,8 +127,8 @@ class HomePark extends Component {
                 }}
                 query={{
                   key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
-                  language: "en", // language of the results
-                  types: "geocode" // default: 'geocode'
+                  language: "en", 
+                  types: ["geocode", "establishment"]
                 }}
                 styles={{
                   textInputContainer: {
@@ -184,17 +185,14 @@ class HomePark extends Component {
               shadowOffset: { width: 5, height: 5 },
               shadowRadius: 10,
               shadowOpacity: .5
-
             }}
             onPress={() => {
               this.setModalVisible(true);
             }}>
             <Text style={{
-              height: 10,
-              paddingLeft: 10,
+              padding: 10,
               marginLeft: 0,
               marginRight: 0,
-              height: 38,
               color: "#5d5d5d",
               backgroundColor: 'white',
               fontSize: 16,
