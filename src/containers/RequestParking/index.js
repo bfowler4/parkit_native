@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Constants, MapView, Marker } from "expo";
+import { MaterialIcons } from '@expo/vector-icons';
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
@@ -57,7 +58,7 @@ class ReqPark extends Component {
       if (this.isMountedStill) {
         this.setState({ isReady: true });
       }
-    }, 9000);
+    }, 60000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -169,9 +170,12 @@ class ReqPark extends Component {
     let time_requested = new Date().getTime();
 
 
-
     return (
       <Container navigation={this.props.navigation}>
+        <View style={styles.timeHeader}>
+          <MaterialIcons name='access-time' size={20} style={styles.icon} color='#59B1B2' />
+          <Text style={{ padding: 15, color: `white` }}>{formattedStartTime} - {formattedEndTime}</Text>
+        </View>
         <View style={styles.container}>
           {this.state.isReady
             ? Alert.alert(
@@ -197,6 +201,7 @@ class ReqPark extends Component {
             }}
             style={{ flex: 1 }}
             ref={c => (this.mapView = c)}
+            showsUserLocation={true}
           >
             {this.state.coordinates.length === 2 && (
               <MapViewDirections
@@ -215,20 +220,13 @@ class ReqPark extends Component {
           </MapView>
           <View
             style={{
-              flex: 0.6,
-              justifyContent: "center",
+              flex: 0.3,
               alignItems: "center",
               backgroundColor: "black"
             }}>
-            <View style={{ alignSelf: `flex-start`, paddingLeft: 20 }}>
+            <View style={{ alignSelf: `flex-start`, paddingLeft: 20, paddingTop: 20 }}>
               <Text style={styles.text}>
                 {`${duration} minutes to destination, ${distanceMiles}`}
-              </Text>
-              <Text style={styles.text}>
-                {`Start Time: ${formattedStartTime}`}
-              </Text>
-              <Text style={styles.text}>
-                {`End Time: ${formattedEndTime}`}
               </Text>
               <Text style={styles.text}>
                 {`Duration: ${reservationDuration}`}
@@ -275,8 +273,19 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   text: {
-    color: "lightgrey",
+    color: "white",
     fontWeight: "bold"
+  },
+  timeHeader: {
+    flexDirection: `row`,
+    width: `100%`,
+    backgroundColor: `black`,
+    borderTopWidth: 1,
+    borderTopColor: `white`,
+  },
+  icon: {
+    paddingVertical: 13,
+    paddingLeft: 15
   }
 });
 

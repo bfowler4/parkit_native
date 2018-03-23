@@ -134,7 +134,6 @@ class HomePark extends Component {
   }
 
   render() {
-    console.log(this.state.newTime);
     if (!this.state.location) {
       return (
         <View
@@ -232,7 +231,7 @@ class HomePark extends Component {
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
                 }}>
-                <Text style={{ color: `white` }}>Apply</Text>
+                <Text style={{ color: `white`, fontWeight: `600`, fontSize: 16 }}>Apply</Text>
               </TouchableHighlight>
             </View>
           </Modal>

@@ -37,7 +37,6 @@ class HomePage extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -69,4 +68,5 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
+
 export default HomePage;
