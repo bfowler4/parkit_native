@@ -103,7 +103,7 @@ class ConfirmPark extends Component {
       latitude: this.props.customer.latitude?this.props.customer.latitude:this.props.customer.coords.latitude,
       longitude: this.props.customer.longitude?this.props.customer.longitude:this.props.customer.coords.longitude
     };
-    console.log(this.props.customer)
+    
 
     let startTime = new Date(
       this.props.reservation.reservedStall.start_time
