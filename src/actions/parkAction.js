@@ -24,7 +24,6 @@ export const spaceRequest = (lat, lng) => {
   };
   return dispatch => {
     AsyncStorage.getItem(`token`, (err, token) => {
-      console.log(token);
       Axios.post(`${REQUEST}/spaces/request`, latlng, {
         headers: {
           Authorization: `Bearer ${token}`
