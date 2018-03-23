@@ -21,7 +21,7 @@ import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
 import Dimensions from "Dimensions";
 import Container from '../../components/container';
-import ReqPark from '../RequestParking';
+
 
 class HomePark extends Component {
   constructor(props) {
@@ -86,7 +86,7 @@ class HomePark extends Component {
     this.props.navigation.navigate("ReviewPark", {state:this.state});
   }
 
-  render() {
+    render() {
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
 
@@ -127,8 +127,8 @@ class HomePark extends Component {
                 }}
                 query={{
                   key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
-                  language: "en", // language of the results
-                  types: "geocode" // default: 'geocode'
+                  language: "en", 
+                  types: ["geocode", "establishment"]
                 }}
                 styles={{
                   textInputContainer: {

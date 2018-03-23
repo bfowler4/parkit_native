@@ -15,7 +15,7 @@ import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
 import Axios from "axios";
 import { reserveSpace } from "../../actions/parkAction";
-import Container from '../../components/container';
+import Container from "../../components/container";
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -26,7 +26,7 @@ const GOOGLE_MAPS_APIKEY = "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU";
 class ReqPark extends Component {
   static navigationOptions = {
     drawerLabel: () => null
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -44,22 +44,15 @@ class ReqPark extends Component {
       ],
       toggle: null,
       isReady: null,
-      distance: null,
+      distance: null
     };
 
     this.mapView = null;
   }
   componentDidMount() {
-    // {
-    //   setTimeout(function() {
-    //     onTimeOut();
-    //   }, 60000);
-    // }
-
-    // onTimeOut = () => {
-    //   this.setState({ isReady: true });
-    
-    // };
+    setTimeout(() => {
+      this.setState({ isReady: true });
+    }, 3000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,7 +80,6 @@ class ReqPark extends Component {
     }
   }
 
-
   onReady = result => {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -99,16 +91,13 @@ class ReqPark extends Component {
     });
   };
 
- 
   onError = errorMessage => {
     Alert.alert(errorMessage);
   };
 
-
   render() {
-   this.props.navigation.state.params.state.chosenDate.getTime()
-     
- 
+    this.props.navigation.state.params.state.chosenDate.getTime();
+
     if (!this.state.distance) {
       return (
         <View
@@ -133,95 +122,106 @@ class ReqPark extends Component {
     let duration = parseInt(
       this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
     );
-    
-    let convertUnix = (duration + 5) * 60*1000;
-    
+
+    let convertUnix = (duration + 5) * 60 * 1000;
+
     let start_time = new Date().getTime() + convertUnix;
     let end_time = this.props.navigation.state.params.state.chosenDate.getTime();
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
-    
-
-
     return (
       <Container navigation={this.props.navigation}>
-      <View style={styles.container}>
-        {this.state.isReady
-          ? Alert.alert(
-              "Timed Out",
-              "Sorrry caaaaaaaz",
-              [
-                {
-                  text: "Parking Page",
-                  onPress: () => {
-                    this.props.navigation.navigate(`ParkHome`);
-                    this.setState({isReady:null})
+        <View style={styles.container}>
+          {this.state.isReady
+            ? Alert.alert(
+                "Timed Out",
+                "Sorrry caaaaaaaz",
+                [
+                  {
+                    text: "Parking Page",
+                    onPress: () => {
+                      this.props.navigation.navigate(`ParkHome`);
+                      this.setState({ isReady: null });
+                    }
                   }
-                }
-              ],
-              { cancelable: false }
-            )
-          : false}
-        <MapView
-          initialRegion={{
-            latitude: this.props.space.latitude,
-            longitude: this.props.space.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          }}
-          style={{flex:1}}
-          ref={c => (this.mapView = c)}
-        >
-          {this.state.coordinates.length === 2 && (
-            <MapViewDirections
-              origin={space}
-              destination={customer}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              strokeColor="hotpink"
-              onReady={this.onReady}
-              onError={this.onError}
-            />
-          )}
+                ],
+                { cancelable: false }
+              )
+            : false}
+          <MapView
+            initialRegion={{
+              latitude: this.props.space.latitude,
+              longitude: this.props.space.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA
+            }}
+            style={{ flex: 1 }}
+            ref={c => (this.mapView = c)}
+          >
+            {this.state.coordinates.length === 2 && (
+              <MapViewDirections
+                origin={space}
+                destination={customer}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="hotpink"
+                onReady={this.onReady}
+                onError={this.onError}
+              />
+            )}
 
-          <MapView.Marker coordinate={customer} />
-          <MapView.Marker coordinate={space} />
-        </MapView>
-        <View style={{height:'3%', backgroundColor:'#7fbcac'}}>
-
-        </View>
-        <View style={{flex:0.4, justifyContent:'center',alignContent:'center',
-        backgroundColor: "#98d2c1"
-      }}>
-          <View style={{flex:0.8,justifyContent:'center',alignContent:'center',
-          backgroundColor: "AliceBlue",
-          borderRadius: 5,
-          alignSelf: "center",
-          margin: 15,
-        }}>
-            <View style={{backgroundColor:'white'}}>
-              <Text style={styles.text}>{`${distanceMiles}`}</Text>
-              <Text style={styles.text}>{`${duration} minutes to destination`}</Text>
-              <Text style={styles.text}>{`Start ${start_time} End ${end_time}`}</Text>
-             </View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                this.props.reserveSpace(
-                  space_id,
-                  time_requested,
-                  start_time,
-                  end_time
-                );
-                this.props.navigation.navigate("ConfirmPark");
+            <MapView.Marker coordinate={customer} />
+            <MapView.Marker coordinate={space} />
+          </MapView>
+          <View style={{ height: "3%", backgroundColor: "#7fbcac" }} />
+          <View
+            style={{
+              flex: 0.4,
+              justifyContent: "center",
+              alignContent: "center",
+              backgroundColor: "#98d2c1"
+            }}
+          >
+            <View
+              style={{
+                flex: 0.8,
+                justifyContent: "center",
+                alignContent: "center",
+                backgroundColor: "AliceBlue",
+                borderRadius: 5,
+                alignSelf: "center",
+                margin: 15
               }}
             >
-              <Text style={{color:'white',fontWeight:'bold'}}>Submit</Text>
-            </TouchableOpacity>
+              <View style={{ backgroundColor: "white" }}>
+                <Text style={styles.text}>{`${distanceMiles}`}</Text>
+                <Text
+                  style={styles.text}
+                >{`${duration} minutes to destination`}</Text>
+                <Text
+                  style={styles.text}
+                >{`Start ${start_time} End ${end_time}`}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  this.props.reserveSpace(
+                    space_id,
+                    time_requested,
+                    start_time,
+                    end_time
+                  );
+                  this.props.navigation.navigate("ConfirmPark");
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
       </Container>
     );
   }
@@ -229,10 +229,9 @@ class ReqPark extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   button: {
-    
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
@@ -247,14 +246,12 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   text: {
-    
-    color:'black',
-    fontWeight:'bold'
+    color: "black",
+    fontWeight: "bold"
   }
 });
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     space: state.park.space,
     customer: state.park.customerCoors

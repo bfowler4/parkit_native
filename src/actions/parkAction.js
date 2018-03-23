@@ -75,7 +75,7 @@ export const reserveSpace = ( space, requested, start, end) => {
       }
     })
       .then(data => {
-        console.log('data',data)
+       
         let reserve = data.data;
       
         dispatch({
