@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -42,11 +42,11 @@ class ConfirmPark extends Component {
     this.mapView = null;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.space && !this.state.distance) {
+  componentWillMount() {
+    if (this.props.space && !this.state.distance) {
       let space = {
-        latitude: nextProps.space.latitude,
-        longitude: nextProps.space.longitude
+        latitude: this.props.space.latitude,
+        longitude: this.props.space.longitude
       };
 
       let customer = {
@@ -55,9 +55,9 @@ class ConfirmPark extends Component {
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
-      },${space.longitude}&destinations=${customer.latitude},${
+        },${space.longitude}&destinations=${customer.latitude},${
         customer.longitude
-      }&key${GOOGLE_MAPS_APIKEY}`;
+        }&key${GOOGLE_MAPS_APIKEY}`;
       Axios.get(destinationURL).then(result => {
         !this.state.distance
           ? this.setState({ distance: result })
@@ -82,13 +82,8 @@ class ConfirmPark extends Component {
     Alert.alert(errorMessage);
   };
 
-
-  
-  
-  
-  render(){
-   
-    if (!this.state.distance) {
+  render() {
+    if (!this.state.distance || !this.props.reservation || !this.props.reservation.reservedStall) {
       return (
         <View
           style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
@@ -112,46 +107,46 @@ class ConfirmPark extends Component {
     let address = this.props.address.space.address;
     let description = this.props.space.description;
     let price = this.props.address.price;
-     return(
-    <Container navigation={this.props.navigation}>  
-     <View style={{flex:1}}>  
-      <MapView
-          initialRegion={{
-            latitude: this.props.space.latitude,
-            longitude: this.props.space.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          }}
-          style={{flex:1}}
-          ref={c => (this.mapView = c)}
-        >
-          {this.state.coordinates.length === 2 && (
-            <MapViewDirections
-              origin={space}
-              destination={customer}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              strokeColor="hotpink"
-              onReady={this.onReady}
-              onError={this.onError}
-            />
-          )}
+    return (
+      <Container navigation={this.props.navigation}>
+        <View style={{ flex: 1 }}>
+          <MapView
+            initialRegion={{
+              latitude: this.props.space.latitude,
+              longitude: this.props.space.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA
+            }}
+            style={{ flex: 1 }}
+            ref={c => (this.mapView = c)}
+          >
+            {this.state.coordinates.length === 2 && (
+              <MapViewDirections
+                origin={space}
+                destination={customer}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="hotpink"
+                onReady={this.onReady}
+                onError={this.onError}
+              />
+            )}
 
-          <MapView.Marker coordinate={customer} />
-          <MapView.Marker coordinate={space} />
-        </MapView>
-        <View style={{flex:0.5,justifyContent:'center', alignContent:'center',backgroundColor:'black'}}>
-          <View style={{flex:0.8,justifyContent:'center',alignContent:'center',backgroundColor:'white',borderRadius:10}}>
-            
-            <Text>{`Price: ${price}`}</Text>
-            <Text>{`start time:${startTime} end time:${endTime}`}</Text>
-            <Text>{`${address.street} ${address.city} ${address.state}`}</Text>
-            <Text>{`Instructions: ${description}`}</Text>
+            <MapView.Marker coordinate={customer} />
+            <MapView.Marker coordinate={space} />
+          </MapView>
+          <View style={{ flex: 0.5, justifyContent: 'center', alignContent: 'center', backgroundColor: 'black' }}>
+            <View style={{ flex: 0.8, justifyContent: 'center', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
 
+              <Text>{`Price: ${price}`}</Text>
+              <Text>{`start time:${startTime} end time:${endTime}`}</Text>
+              <Text>{`${address.street} ${address.city} ${address.state}`}</Text>
+              <Text>{`Instructions: ${description}`}</Text>
+
+            </View>
           </View>
         </View>
-     </View>
-     </Container>
+      </Container>
     )
   }
 }
@@ -167,11 +162,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  
+
   return {
     space: state.park.space,
-    reservation:state.park,
-    address:state.park.reservedStall
+    reservation: state.park,
+    address: state.park.reservedStall
   };
 };
 
