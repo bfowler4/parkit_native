@@ -216,7 +216,7 @@ class ReqPark extends Component {
                 this.props.navigation.navigate("ConfirmPark");
               }}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text style={{ color: "black", fontWeight: "bold" }}>
                 Submit
                 </Text>
             </TouchableOpacity>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: `solid`,
     borderRadius: 5,
-    backgroundColor: "#7fbcac",
+    backgroundColor: "lightgrey",
     zIndex: 100,
     alignSelf: "center"
   },
