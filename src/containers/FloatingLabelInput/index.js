@@ -23,7 +23,7 @@ class FloatingLabelInput extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: (this.state.isFocused || this.props.value !== '') ? 1 : 0,
-      duration: 300,
+      duration: 200,
     }).start();
   }
 
@@ -55,7 +55,7 @@ class FloatingLabelInput extends Component {
     }
 
     return (
-      <View style={{ paddingTop: 15, width: '80%' }}>
+      <View style={{ paddingTop: 15, width: '100%', marginTop: 10 }}>
         <Animated.Text style={labelStyle}>
           {label}
         </Animated.Text>

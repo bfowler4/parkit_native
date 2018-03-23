@@ -21,10 +21,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^25.0.0",
-    "native-base": "^2.3.10",
     "geolib": "^2.0.24",
     "google-distance": "^1.0.1",
     "jwt-decode": "^2.2.0",
+    "native-base": "^2.3.10",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-animatable": "^1.2.4",

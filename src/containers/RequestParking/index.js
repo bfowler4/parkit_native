@@ -50,9 +50,9 @@ class ReqPark extends Component {
     this.mapView = null;
   }
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ isReady: true });
-    }, 3000);
+    // setTimeout(() => {
+    //   this.setState({ isReady: true });
+    // }, 60000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,9 +68,9 @@ class ReqPark extends Component {
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
-      },${space.longitude}&destinations=${customer.latitude},${
+        },${space.longitude}&destinations=${customer.latitude},${
         customer.longitude
-      }&key${GOOGLE_MAPS_APIKEY}`;
+        }&key${GOOGLE_MAPS_APIKEY}`;
       Axios.get(destinationURL).then(result => {
         !this.state.distance
           ? this.setState({ distance: result })
@@ -127,6 +127,12 @@ class ReqPark extends Component {
 
     let start_time = new Date().getTime() + convertUnix;
     let end_time = this.props.navigation.state.params.state.chosenDate.getTime();
+    const reservationDuration = getDuration(start_time, end_time);
+    const price = `$${(Math.ceil((end_time - start_time) / 60000 * 0.033333333 * 100) / 100).toFixed(2)}`;
+    let formattedStartTime = new Date(start_time).toLocaleTimeString().split(` `);
+    formattedStartTime = `${formattedStartTime[0].slice(0, -3)} ${formattedStartTime[1]}`;
+    let formattedEndTime = new Date(end_time).toLocaleTimeString().split(` `);
+    formattedEndTime = `${formattedEndTime[0].slice(0, -3)} ${formattedEndTime[1]}`;
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
@@ -135,19 +141,19 @@ class ReqPark extends Component {
         <View style={styles.container}>
           {this.state.isReady
             ? Alert.alert(
-                "Timed Out",
-                "Sorrry caaaaaaaz",
-                [
-                  {
-                    text: "Parking Page",
-                    onPress: () => {
-                      this.props.navigation.navigate(`ParkHome`);
-                      this.setState({ isReady: null });
-                    }
+              "Timed Out",
+              "Sorrry caaaaaaaz",
+              [
+                {
+                  text: "Parking Page",
+                  onPress: () => {
+                    this.props.navigation.navigate(`ParkHome`);
+                    this.setState({ isReady: null });
                   }
-                ],
-                { cancelable: false }
-              )
+                }
+              ],
+              { cancelable: false }
+            )
             : false}
           <MapView
             initialRegion={{
@@ -174,55 +180,49 @@ class ReqPark extends Component {
             <MapView.Marker coordinate={customer} />
             <MapView.Marker coordinate={space} />
           </MapView>
-          <View style={{ height: "3%", backgroundColor: "#7fbcac" }} />
           <View
             style={{
               flex: 0.4,
               justifyContent: "center",
-              alignContent: "center",
-              backgroundColor: "#98d2c1"
-            }}
-          >
-            <View
-              style={{
-                flex: 0.8,
-                justifyContent: "center",
-                alignContent: "center",
-                backgroundColor: "AliceBlue",
-                borderRadius: 5,
-                alignSelf: "center",
-                margin: 15
+              alignItems: "center",
+              backgroundColor: "black"
+            }}>
+            <View style={{ alignSelf: `flex-start`, paddingLeft: 20 }}>
+              <Text style={styles.text}>
+                {`${duration} minutes to destination, ${distanceMiles}`}
+              </Text>
+              <Text style={styles.text}>
+          {`Start Time: ${formattedStartTime}`}
+              </Text>
+              <Text style={styles.text}>
+                {`End Time: ${formattedEndTime}`}
+              </Text>
+              <Text style={styles.text}>
+                {`Duration: ${reservationDuration}`}
+              </Text>
+              <Text style={styles.text}>
+                {`Price: ${price}`}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.props.reserveSpace(
+                  space_id,
+                  time_requested,
+                  start_time,
+                  end_time
+                );
+                this.props.navigation.navigate("ConfirmPark");
               }}
             >
-              <View style={{ backgroundColor: "white" }}>
-                <Text style={styles.text}>{`${distanceMiles}`}</Text>
-                <Text
-                  style={styles.text}
-                >{`${duration} minutes to destination`}</Text>
-                <Text
-                  style={styles.text}
-                >{`Start ${start_time} End ${end_time}`}</Text>
-              </View>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  this.props.reserveSpace(
-                    space_id,
-                    time_requested,
-                    start_time,
-                    end_time
-                  );
-                  this.props.navigation.navigate("ConfirmPark");
-                }}
-              >
-                <Text style={{ color: "white", fontWeight: "bold" }}>
-                  Submit
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Submit
                 </Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
-      </Container>
+      </Container >
     );
   }
 }
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   text: {
-    color: "black",
+    color: "lightgrey",
     fontWeight: "bold"
   }
 });
@@ -270,3 +270,16 @@ export default (ConnectedLoginPage = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ReqPark));
+
+function getDuration(startTime, endTime) {
+  let minutes = Math.ceil((endTime - startTime) / 60000);
+  let hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+  if (hours === 0) {
+    return `${minutes} minutes`;
+  } else if (minutes === 0) {
+    return `${hours} hours`;
+  } else {
+    return `${hours} hours and ${minutes} minutes`;
+  }
+}

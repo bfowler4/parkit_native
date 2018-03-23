@@ -51,7 +51,7 @@ const authDrawer = DrawerNavigator(
     ConfirmPark: {screen: ConfirmPark},
     Logout: { screen: LogoutPage }
   }, {
-    initialRouteName: 'ParkHome',
+    initialRouteName: 'RolePick',
     contentComponent: customDrawerContentComponent,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
