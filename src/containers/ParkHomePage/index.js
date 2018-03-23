@@ -238,7 +238,7 @@ class HomePark extends Component {
               flex: 0,
               justifyContent: `center`,
               alignItems: `center`,
-              backgroundColor: "white"
+              backgroundColor: "black"
             }}>
             <TouchableOpacity
               style={styles.button}
@@ -259,11 +259,8 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 9,
     width: 200,
-    borderColor: `black`,
-    borderWidth: 1,
-    borderStyle: `solid`,
     borderRadius: 5,
-    backgroundColor: "white"
+    backgroundColor: `lightgrey`
   },
 });
 

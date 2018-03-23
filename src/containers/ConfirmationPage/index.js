@@ -43,49 +43,21 @@ class ConfirmPark extends Component {
   }
 
   componentWillMount() {
-    // if(this.props.space){
-    //   console.log(this.props.space, 'bfow');
-    // let space = {
-    //   latitude: this.props.space.latitude,
-    //   longitude: this.props.space.longitude
-    // };
-
-    // let customer = {
-    //   latitude: this.props.customer.latitude,
-    //   longitude: this.props.customer.longitude
-    // };
-    // let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
-    //   space.latitude
-    // },${space.longitude}&destinations=${customer.latitude},${
-    //   customer.longitude
-    // }&key${GOOGLE_MAPS_APIKEY}`;
-    // Axios.get(destinationURL).then(result => {
-    //   !this.state.distance
-    //     ? this.setState({ distance: result })
-    //     : console.log("stop");
-    //   return true;
-    // });
-    // }
-  }
-
-  componentWillReceiveProps(nextProps) {
-  
-    if (nextProps.space && !this.state.distance) {
-      
+    if (this.props.space && !this.state.distance) {
       let space = {
-        latitude: nextProps.space.latitude,
-        longitude: nextProps.space.longitude
+        latitude: this.props.space.latitude,
+        longitude: this.props.space.longitude
       };
     
       let customer = {
-        latitude: nextProps.customer.latitude,
-        longitude: nextProps.customer.longitude
+        latitude: this.props.customer.latitude,
+        longitude: this.props.customer.longitude
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
-      },${space.longitude}&destinations=${customer.latitude},${
+        },${space.longitude}&destinations=${customer.latitude},${
         customer.longitude
-      }&key${GOOGLE_MAPS_APIKEY}`;
+        }&key${GOOGLE_MAPS_APIKEY}`;
       Axios.get(destinationURL).then(result => {
         !this.state.distance
           ? this.setState({ distance: result })
@@ -111,8 +83,7 @@ class ConfirmPark extends Component {
   };
 
   render() {
-  
-    if (!this.state.distance) {
+    if (!this.state.distance || !this.props.reservation || !this.props.reservation.reservedStall) {
       return (
         <View
           style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
@@ -129,9 +100,10 @@ class ConfirmPark extends Component {
     };
 
     let customer = {
-      latitude: this.props.customer.latitude,
-      longitude: this.props.customer.longitude
+      latitude: this.props.customer.latitude?this.props.customer.latitude:this.props.customer.coords.latitude,
+      longitude: this.props.customer.longitude?this.props.customer.longitude:this.props.customer.coords.longitude
     };
+    console.log(this.props.customer)
 
     let startTime = new Date(
       this.props.reservation.reservedStall.start_time
@@ -171,34 +143,19 @@ class ConfirmPark extends Component {
             <MapView.Marker coordinate={customer} />
             <MapView.Marker coordinate={space} />
           </MapView>
-          <View
-            style={{
-              flex: 0.5,
-              justifyContent: "center",
-              alignContent: "center",
-              backgroundColor: "black"
-            }}
-          >
-            <View
-              style={{
-                flex: 0.8,
-                justifyContent: "center",
-                alignContent: "center",
-                backgroundColor: "white",
-                borderRadius: 10
-              }}
-            >
+          <View style={{ flex: 0.5, justifyContent: 'center', alignContent: 'center', backgroundColor: 'black' }}>
+            <View style={{ flex: 0.8, justifyContent: 'center', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
+
               <Text>{`Price: ${price}`}</Text>
               <Text>{`start time:${startTime} end time:${endTime}`}</Text>
-              <Text>{`${address.street} ${address.city} ${
-                address.state
-              }`}</Text>
+              <Text>{`${address.street} ${address.city} ${address.state}`}</Text>
               <Text>{`Instructions: ${description}`}</Text>
+
             </View>
           </View>
         </View>
       </Container>
-    );
+    )
   }
 }
 
