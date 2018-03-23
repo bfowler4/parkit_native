@@ -15,7 +15,7 @@ export default (state = initialState, action = {}) =>{
     
     return {...state, customerCoors:action.payload}
     case RESERVE_SPACE:
-    
+  
     return {...state, reservedStall:action.payload}
     default:
     return state;

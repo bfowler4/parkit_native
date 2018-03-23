@@ -51,8 +51,8 @@ class ConfirmPark extends Component {
     // };
 
     // let customer = {
-    //   latitude: 21.296923,
-    //   longitude: -157.822839
+    //   latitude: this.props.customer.latitude,
+    //   longitude: this.props.customer.longitude
     // };
     // let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
     //   space.latitude
@@ -69,15 +69,17 @@ class ConfirmPark extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+  
     if (nextProps.space && !this.state.distance) {
+      
       let space = {
         latitude: nextProps.space.latitude,
         longitude: nextProps.space.longitude
       };
-
+    
       let customer = {
-        latitude: 21.296923,
-        longitude: -157.822839
+        latitude: nextProps.customer.latitude,
+        longitude: nextProps.customer.longitude
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
@@ -119,7 +121,7 @@ class ConfirmPark extends Component {
         </View>
       );
     }
-    console.log(this.props.reservation, 'kjnjhk'); 
+ 
 
     let space = {
       latitude: this.props.space.latitude,
