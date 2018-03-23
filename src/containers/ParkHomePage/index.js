@@ -185,17 +185,14 @@ class HomePark extends Component {
               shadowOffset: { width: 5, height: 5 },
               shadowRadius: 10,
               shadowOpacity: .5
-
             }}
             onPress={() => {
               this.setModalVisible(true);
             }}>
             <Text style={{
-              height: 10,
-              paddingLeft: 10,
+              padding: 10,
               marginLeft: 0,
               marginRight: 0,
-              height: 38,
               color: "#5d5d5d",
               backgroundColor: 'white',
               fontSize: 16,
