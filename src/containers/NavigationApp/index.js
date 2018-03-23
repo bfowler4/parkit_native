@@ -20,7 +20,7 @@ import LogoutPage from '../LogoutPage';
 import { addListener } from '../../utilities/redux';
 
 const customDrawerContentComponent = (props) => (
-  <View style={{ flex: 1, backgroundColor: 'lightgrey'}}>
+  <View style={{ flex: 1 }}>
     <Image 
       style={styles.drawerImage}
       source={require('../../.././assetts/ParkItNavBar.png')} />

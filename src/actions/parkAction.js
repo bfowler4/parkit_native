@@ -6,7 +6,7 @@ export const SPACE_REQUEST = "SPACE_REQUEST";
 export const CUSTOMER_COORS = "REQUEST_INFO";
 export const RESERVE_SPACE = "RESERVE_SPACE";
 
-const REQUEST = `http://f9960b6f.ngrok.io/api`;
+const REQUEST = `http://330436ca.ngrok.io/api`;
 
 export const customercoors = location => {
   return dispatch => {
