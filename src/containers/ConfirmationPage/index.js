@@ -14,7 +14,7 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
-import Container from '../../components/container';
+import Container from "../../components/container";
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -40,7 +40,7 @@ class ConfirmPark extends Component {
           longitude: -157.822839
         }
       ],
-      distance: null,
+      distance: null
     };
 
     this.mapView = null;
@@ -52,10 +52,10 @@ class ConfirmPark extends Component {
         latitude: this.props.space.latitude,
         longitude: this.props.space.longitude
       };
-
+    
       let customer = {
-        latitude: 21.296923,
-        longitude: -157.822839
+        latitude: this.props.customer.latitude,
+        longitude: this.props.customer.longitude
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
@@ -96,6 +96,7 @@ class ConfirmPark extends Component {
         </View>
       );
     }
+ 
 
     let space = {
       latitude: this.props.space.latitude,
@@ -103,11 +104,18 @@ class ConfirmPark extends Component {
     };
 
     let customer = {
-      latitude: 21.296923,
-      longitude: -157.822839
+      latitude: this.props.customer.latitude?this.props.customer.latitude:this.props.customer.coords.latitude,
+      longitude: this.props.customer.longitude?this.props.customer.longitude:this.props.customer.coords.longitude
     };
-    let startTime = new Date(this.props.reservation.reservedStall.start_time).toLocaleTimeString();
-    let endTime = new Date(this.props.reservation.reservedStall.end_time).toLocaleTimeString();
+    
+
+    let startTime = new Date(
+      this.props.reservation.reservedStall.start_time
+    ).toLocaleTimeString();
+    
+    let endTime = new Date(
+      this.props.reservation.reservedStall.end_time
+    ).toLocaleTimeString();
     let address = this.props.address.space.address;
     let description = this.props.space.description;
     let price = this.props.address.price;
@@ -166,11 +174,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-
   return {
     space: state.park.space,
     reservation: state.park,
-    address: state.park.reservedStall
+    address: state.park.reservedStall,
+    customer: state.park.customerCoors
   };
 };
 
@@ -182,5 +190,3 @@ export default (ConnectedLoginPage = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ConfirmPark));
-
-

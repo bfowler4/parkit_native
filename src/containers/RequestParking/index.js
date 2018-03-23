@@ -50,9 +50,9 @@ class ReqPark extends Component {
     this.mapView = null;
   }
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.setState({ isReady: true });
-    // }, 60000);
+    setTimeout(() => {
+      this.setState({ isReady: true });
+    }, 60000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,8 +63,8 @@ class ReqPark extends Component {
       };
 
       let customer = {
-        latitude: 21.296923,
-        longitude: -157.822839
+        latitude: this.props.customer.latitude,
+        longitude: this.props.customer.longitude
       };
       let destinationURL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&mode=driving&origins=${
         space.latitude
@@ -96,9 +96,11 @@ class ReqPark extends Component {
   };
 
   render() {
+    
     this.props.navigation.state.params.state.chosenDate.getTime();
 
     if (!this.state.distance) {
+    
       return (
         <View
           style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
@@ -112,17 +114,38 @@ class ReqPark extends Component {
       latitude: this.props.space.latitude,
       longitude: this.props.space.longitude
     };
-
+    
+    
     let customer = {
-      latitude: 21.296923,
-      longitude: -157.822839
-    };
+      latitude:this.props.customer.latitude,
+      longitude:this.props.customer.longitude
+    }
+ 
+    if(this.state.distance.data.rows[0].elements[0].status === "ZERO_RESULTS"){
+      return  <View>
+        { Alert.alert(
+          "Error",
+          "No Stalls In Range",
+          [
+            {
+              text: "Home",
+              onPress: () => {
+                this.props.navigation.navigate(`ParkHome`);
+                
+              }
+            }
+          ],
+          { cancelable: false }
+        )}
+      </View>
+      }
     let distanceMiles = this.state.distance.data.rows[0].elements[0].distance
       .text;
+   
     let duration = parseInt(
       this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
     );
-
+    
     let convertUnix = (duration + 5) * 60 * 1000;
 
     let start_time = new Date().getTime() + convertUnix;
@@ -135,6 +158,8 @@ class ReqPark extends Component {
     formattedEndTime = `${formattedEndTime[0].slice(0, -3)} ${formattedEndTime[1]}`;
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
+
+    
 
     return (
       <Container navigation={this.props.navigation}>
