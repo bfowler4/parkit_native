@@ -48,11 +48,16 @@ class ReqPark extends Component {
     };
 
     this.mapView = null;
+    this.isMountedStill = false;
   }
+
   componentDidMount() {
+    this.isMountedStill = true;
     setTimeout(() => {
-      this.setState({ isReady: true });
-    }, 60000);
+      if (this.isMountedStill) {
+        this.setState({ isReady: true });
+      }
+    }, 9000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +85,10 @@ class ReqPark extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.isMountedStill = false;
+  }
+
   onReady = result => {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -96,11 +105,11 @@ class ReqPark extends Component {
   };
 
   render() {
-    
+
     this.props.navigation.state.params.state.chosenDate.getTime();
 
     if (!this.state.distance) {
-    
+
       return (
         <View
           style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
@@ -114,16 +123,16 @@ class ReqPark extends Component {
       latitude: this.props.space.latitude,
       longitude: this.props.space.longitude
     };
-    
-    
+
+
     let customer = {
-      latitude:this.props.customer.latitude,
-      longitude:this.props.customer.longitude
+      latitude: this.props.customer.latitude,
+      longitude: this.props.customer.longitude
     }
- 
-    if(this.state.distance.data.rows[0].elements[0].status === "ZERO_RESULTS"){
-      return  <View>
-        { Alert.alert(
+
+    if (this.state.distance.data.rows[0].elements[0].status === "ZERO_RESULTS") {
+      return <View>
+        {Alert.alert(
           "Error",
           "No Stalls In Range",
           [
@@ -131,21 +140,21 @@ class ReqPark extends Component {
               text: "Home",
               onPress: () => {
                 this.props.navigation.navigate(`ParkHome`);
-                
+
               }
             }
           ],
           { cancelable: false }
         )}
       </View>
-      }
+    }
     let distanceMiles = this.state.distance.data.rows[0].elements[0].distance
       .text;
-   
+
     let duration = parseInt(
       this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
     );
-    
+
     let convertUnix = (duration + 5) * 60 * 1000;
 
     let start_time = new Date().getTime() + convertUnix;
@@ -159,7 +168,7 @@ class ReqPark extends Component {
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
-    
+
 
     return (
       <Container navigation={this.props.navigation}>
@@ -173,7 +182,6 @@ class ReqPark extends Component {
                   text: "Parking Page",
                   onPress: () => {
                     this.props.navigation.navigate(`ParkHome`);
-                    this.setState({ isReady: null });
                   }
                 }
               ],
@@ -207,7 +215,7 @@ class ReqPark extends Component {
           </MapView>
           <View
             style={{
-              flex: 0.4,
+              flex: 0.6,
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "black"
@@ -217,7 +225,7 @@ class ReqPark extends Component {
                 {`${duration} minutes to destination, ${distanceMiles}`}
               </Text>
               <Text style={styles.text}>
-          {`Start Time: ${formattedStartTime}`}
+                {`Start Time: ${formattedStartTime}`}
               </Text>
               <Text style={styles.text}>
                 {`End Time: ${formattedEndTime}`}
@@ -229,24 +237,24 @@ class ReqPark extends Component {
                 {`Price: ${price}`}
               </Text>
             </View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                this.props.reserveSpace(
-                  space_id,
-                  time_requested,
-                  start_time,
-                  end_time
-                );
-                this.props.navigation.navigate("ConfirmPark");
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                Submit
-                </Text>
-            </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            this.props.reserveSpace(
+              space_id,
+              time_requested,
+              start_time,
+              end_time
+            );
+            this.props.navigation.navigate("ConfirmPark");
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Reserve
+                </Text>
+        </TouchableOpacity>
       </Container >
     );
   }
@@ -257,18 +265,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   button: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 40,
     justifyContent: `center`,
     alignItems: `center`,
-    height: 40,
-    margin: 9,
-    width: 200,
-    borderColor: `black`,
-    borderWidth: 1,
-    borderStyle: `solid`,
-    borderRadius: 5,
-    backgroundColor: "#7fbcac",
+    backgroundColor: "#59B1B2",
     zIndex: 100,
-    alignSelf: "center"
   },
   text: {
     color: "lightgrey",

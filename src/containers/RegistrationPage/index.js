@@ -71,7 +71,7 @@ class RegistrationPage extends Component {
           <TouchableOpacity
             style={styles.button}
             onPress={this.handleSubmit.bind(this)}>
-            <Text style={{ color: `lightgrey` }}>Sign Up</Text>
+            <Text style={{ color: `white` }}>Sign Up</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </Container>
@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: `center`,
     alignItems: `center`,
+    marginTop: 10,
     height: 40,
     width: 200,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: `lightgrey`,
-    backgroundColor: `black`
+    backgroundColor: `#59B1B2`
   }
 });

@@ -32,12 +32,12 @@ class RolePick extends Component {
             style={styles.button1}
             value={`park`}
             onPress={this.handleSetPark.bind(this)}>
-            <Text style={{ color: `lightgrey` }}>Park with Parkit</Text>
+            <Text style={{ color: `white` }}>Park with Parkit</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button2}
             onPress={this.handleSetHost.bind(this)}>
-            <Text>Host with Parkit</Text>
+            <Text style={{ color: `lightgrey` }}>Host with Parkit</Text>
           </TouchableOpacity>
         </View>
       </Container>
@@ -71,11 +71,10 @@ const styles = StyleSheet.create({
     justifyContent: `center`,
     alignItems: `center`,
     height: 40,
-    margin: 9,
+    marginBottom: 20,
     width: 200,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: `lightgrey`
+    backgroundColor: `#59B1B2`
   },
   button2: {
     justifyContent: `center`,
@@ -84,6 +83,7 @@ const styles = StyleSheet.create({
     margin: 9,
     width: 200,
     borderRadius: 5,
-    backgroundColor: `lightgrey`
+    borderWidth: 1,
+    borderColor: `lightgrey`
   }
 })

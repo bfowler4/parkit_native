@@ -12,11 +12,11 @@ import {
   TouchableHighlight,
   Picker,
   Button,
-  DatePickerIos,
-  DatePickerIOS
+  DatePickerIOS,
 } from "react-native";
 import Modal from 'react-native-modal';
 import { MapView, Constants, Location, Permissions } from "expo";
+import { MaterialIcons } from '@expo/vector-icons';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
@@ -38,7 +38,7 @@ class HomePark extends Component {
       targLat: 21.2969,
       targLng: -157.8171,
       location: null,
-      autocomplete:`Enter Location`,
+      autocomplete:`Where do you want to park?      1 Hour`,
       err: null,
       modalVisible: false,
       chosenDate: new Date(new Date().getTime() + 3600000)
@@ -192,13 +192,16 @@ class HomePark extends Component {
               </TouchableHighlight>
             </View>
           </Modal>
+          <View style={{ 
+            width: screenWidth * .85,
+            position: `absolute`, 
+            top: '10%', 
+            zIndex: 100000, 
+            alignSelf: `center`,
+          }}>
           <TouchableHighlight
             style={{ 
-              position: `absolute`, 
-              top: '10%', 
-              zIndex: 100000, 
               width: screenWidth * .85, 
-              alignSelf: `center`,
               shadowColor: `black`,
               shadowOffset: { width: 5, height: 5 },
               shadowRadius: 10,
@@ -217,6 +220,9 @@ class HomePark extends Component {
               borderWidth: 0
             }}>{this.state.autocomplete}</Text>
           </TouchableHighlight>
+          <MaterialIcons name = 'access-time' size={20} style={styles.icon} color='#5d5d5d' />
+          <Text style={styles.line}>|</Text>
+          </View>
           <MapView
             style={{ flex: 1 }}
             key={this.state.key}
@@ -236,20 +242,12 @@ class HomePark extends Component {
                 longitude: this.state.targLng
               }} />
           </MapView>
-          <View
-            style={{
-              flex: 0,
-              justifyContent: `center`,
-              alignItems: `center`,
-              backgroundColor: "black"
-            }}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.handleSubmit.bind(this)}>
-              <Text>Submit</Text>
-            </TouchableOpacity>
-          </View>
         </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.handleSubmit.bind(this)}>
+          <Text style={{ color: `white`, fontWeight: `600`, fontSize: 16 }}>Submit</Text>
+        </TouchableOpacity>
       </Container>
     );
   }
@@ -257,14 +255,28 @@ class HomePark extends Component {
 
 const styles = StyleSheet.create({
   button: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 40,
     justifyContent: `center`,
     alignItems: `center`,
-    height: 40,
-    margin: 9,
-    width: 200,
-    borderRadius: 5,
-    backgroundColor: `lightgrey`
+    backgroundColor: "#59B1B2",
+    zIndex: 100,
   },
+  icon: {
+    position: 'absolute',
+    right: 0,
+    marginRight: 10,
+    marginTop: 10
+  },
+  line: {
+    position: `absolute`,
+    right: 0,
+    marginRight: 87,
+    fontSize: 30,
+    color: `#cccccc`
+  }
 });
 
 const mapStateToProps = state => {
