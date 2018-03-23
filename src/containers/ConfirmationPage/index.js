@@ -22,6 +22,10 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = "AIzaSyDa4lLi7DOGlx9ODC8q9xpyOMG53S-EXKU";
 
 class ConfirmPark extends Component {
+  static navigationOptions = {
+    drawerLabel: () => `My Reservations`
+  }
+
   constructor(props) {
     super(props);
 
