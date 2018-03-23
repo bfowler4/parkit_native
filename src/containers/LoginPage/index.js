@@ -58,7 +58,7 @@ class LoginPage extends Component {
             <TouchableOpacity
               style={styles.button}
               onPress={this.handleSubmit.bind(this)}>
-              <Text>Login</Text>
+              <Text style={{ color: `lightgrey` }}>Login</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: `#EBEBEB`
+    backgroundColor: `black`
   },
   inputSection: {
     flexDirection: 'row',
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     width: '80%',
-    backgroundColor: `white`,
+    backgroundColor: `lightgrey`,
     borderBottomWidth: 1,
     borderColor: 1,
     borderRadius: 10,
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     paddingBottom: 10,
-    backgroundColor: `white`
   },
   icon: {
     padding: 10
@@ -118,9 +117,9 @@ const styles = StyleSheet.create({
     alignItems: `center`,
     height: 40,
     width: 200,
-    borderColor: `black`,
     borderWidth: 1,
     borderStyle: `solid`,
+    borderColor: `lightgrey`,
     borderRadius: 5
   }
 });

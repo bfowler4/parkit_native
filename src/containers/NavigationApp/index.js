@@ -9,8 +9,10 @@ import HomePage from '../HomePage';
 import LoginPage from '../LoginPage';
 import RegistrationPage from '../RegistrationPage';
 
+import PaymentPage from '../PaymentPage';
 import HomePark from '../ParkHomePage';
 import ReqPark from '../RequestParking';
+import ConfirmPark from '../ConfirmationPage'
 import Protected from '../../components/protected';
 import RolePick from '../RolePickPage';
 import LogoutPage from '../LogoutPage';
@@ -43,11 +45,13 @@ const unAuthDrawer = DrawerNavigator(
 const authDrawer = DrawerNavigator(
   {
     RolePick: { screen: RolePick },
+    Payment: { screen: PaymentPage },
     ParkHome: { screen: HomePark },
     ReviewPark: { screen: ReqPark },
+    ConfirmPark: {screen: ConfirmPark},
     Logout: { screen: LogoutPage }
   }, {
-    initialRouteName: 'RolePick',
+    initialRouteName: 'ParkHome',
     contentComponent: customDrawerContentComponent,
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',

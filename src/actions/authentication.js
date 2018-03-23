@@ -29,7 +29,7 @@ export const register = (name, email, password) => {
       });
     })
     .catch(err => {
-      console.log(err.message);
+      (err.message);
     });
   }
 }
