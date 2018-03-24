@@ -159,7 +159,7 @@ class ConfirmPark extends Component {
             </View>
             <View style={{ flexDirection: `row`, alignItems: `center`, width: `85%` }}>
               <Entypo name='info' size={30} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
-              <Text style={{ color: `white`, paddingLeft: 20, paddingTop: 10, fontSize: 16 }}>{`Park on the left side of the driveway. Be careful, we have a dog!`}</Text>
+              <Text style={{ color: `white`, paddingLeft: 20, paddingTop: 10, fontSize: 16 }}>{description}</Text>
             </View>
           </View>
         </View>
