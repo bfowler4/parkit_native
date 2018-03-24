@@ -12,11 +12,13 @@ import {
   TouchableHighlight,
   Picker,
   Button,
-  DatePickerIos,
-  DatePickerIOS
+  DatePickerIOS,
+  Keyboard,
+  Animated
 } from "react-native";
 import Modal from 'react-native-modal';
 import { MapView, Constants, Location, Permissions } from "expo";
+import { MaterialIcons } from '@expo/vector-icons';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { spaceRequest } from "../../actions/parkAction";
 import { customercoors } from "../../actions/parkAction";
@@ -38,12 +40,17 @@ class HomePark extends Component {
       targLat: 21.2969,
       targLng: -157.8171,
       location: null,
-      autocomplete:`Enter Location`,
+      autocomplete: `Where do you want to park?`,
       err: null,
       modalVisible: false,
-      chosenDate: new Date(new Date().getTime() + 3600000)
+      chosenDate: new Date(new Date().getTime() + 3600000),
+      newTime: false
     };
+
     this.setDate = this.setDate.bind(this);
+    this.keyboardHeight = new Animated.Value(0);
+    this.baseMargin = Dimensions.get(`window`).height - 450;
+    this.clockMargin = new Animated.Value(this.baseMargin);
   }
 
   setModalVisible(visible) {
@@ -51,10 +58,12 @@ class HomePark extends Component {
   }
 
   setDate(newDate) {
-    this.setState({ chosenDate: newDate })
+    this.setState({ chosenDate: newDate, newTime: true })
   }
 
   componentWillMount() {
+    this.keyboardWillShowSub = Keyboard.addListener(`keyboardWillShow`, this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener(`keyboardWillHide`, this.keyboardWillHide);
     if (Platform.OS === "android" && !Constants.isDevice) {
       this.setState({
         errorMessage: "Not Compadible With Androids Or None Modile Devices!"
@@ -62,6 +71,37 @@ class HomePark extends Component {
     } else {
       this._getLocationAsync();
     }
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+
+  keyboardWillShow = (event) => {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: event.endCoordinates.height
+      }),
+      Animated.timing(this.clockMargin, {
+        duration: event.duration,
+        toValue: 50
+      }),
+    ]).start();
+  }
+
+  keyboardWillHide = (event) => {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+      Animated.timing(this.clockMargin, {
+        duration: event.duration,
+        toValue: this.baseMargin
+      })
+    ]).start();
   }
 
   _getLocationAsync = async () => {
@@ -74,7 +114,7 @@ class HomePark extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
-    this.setState({lat:location.coords.latitude,lng:location.coords.longitude})
+    this.setState({ lat: location.coords.latitude, lng: location.coords.longitude })
     this.setState({ key: Math.random() });
     this.props.customercoors(location);
   };
@@ -90,20 +130,20 @@ class HomePark extends Component {
       ? this.props.customercoors(this.state.location.coords)
       : console.log("no location");
 
-    this.props.navigation.navigate("ReviewPark", {state:this.state});
+    this.props.navigation.navigate("ReviewPark", { state: this.state });
   }
 
-    render() {
-   if(!this.state.location){
-    return (
-      <View
-        style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
-      >
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-   }
- 
+  render() {
+    if (!this.state.location) {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
+        >
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    }
+
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
 
@@ -132,7 +172,7 @@ class HomePark extends Component {
                 }
                 onPress={(data, details = null) => {
                   // 
-                  this.setState({autocomplete:details.formatted_address})
+                  this.setState({ autocomplete: details.formatted_address })
                   this.setState({
                     lat: details.geometry.location.lat,
                     lng: details.geometry.location.lng
@@ -145,22 +185,24 @@ class HomePark extends Component {
                 }}
                 query={{
                   key: "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI",
-                  language: "en", 
+                  language: "en",
                   types: ["geocode", "establishment"]
                 }}
                 styles={{
                   textInputContainer: {
                     borderTopWidth: 0,
                     borderBottomWidth: 0,
-                    backgroundColor: `white`
+                    backgroundColor: `white`,
+                    paddingTop: 30
                   },
                   listView: {
+                    paddingTop: 30
                   },
                   textInput: {
                     height: 38,
                     color: "#5d5d5d",
                     fontSize: 16,
-                    borderWidth: 0
+                    borderWidth: 0,
                   },
                   predefinedPlacesDescription: {
                     color: "#1faadb"
@@ -173,14 +215,15 @@ class HomePark extends Component {
                   }
                 }}
               />
-            </View>
-            <View style={{ display: 'flex', marginBottom: 50 }}>
-              <DatePickerIOS
-                date={this.state.chosenDate}
-                onDateChange={this.setDate}
-                minimumDate={new Date(new Date().getTime() + 3600000)}
-                maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
-              />
+              <Animated.View style={{ paddingBottom: this.clockMargin }}>
+                <Text style={{ color: `#59B1B2`, paddingLeft: 20, fontSize: 20 }}>When do you plan to leave?</Text>
+                <DatePickerIOS
+                  date={this.state.chosenDate}
+                  onDateChange={this.setDate}
+                  minimumDate={new Date(new Date().getTime() + 3600000)}
+                  maximumDate={new Date(new Date().setHours(23, 59, 59, 0))}
+                />
+              </Animated.View>
             </View>
             <View style={{ display: 'flex', marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
               <TouchableHighlight
@@ -188,35 +231,42 @@ class HomePark extends Component {
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);
                 }}>
-                <Text>SUBMIT</Text>
+                <Text style={{ color: `white`, fontWeight: `600`, fontSize: 16 }}>Apply</Text>
               </TouchableHighlight>
             </View>
           </Modal>
-          <TouchableHighlight
-            style={{ 
-              position: `absolute`, 
-              top: '10%', 
-              zIndex: 100000, 
-              width: screenWidth * .85, 
-              alignSelf: `center`,
-              shadowColor: `black`,
-              shadowOffset: { width: 5, height: 5 },
-              shadowRadius: 10,
-              shadowOpacity: .5
-            }}
-            onPress={() => {
-              this.setModalVisible(true);
-            }}>
-            <Text style={{
-              padding: 10,
-              marginLeft: 0,
-              marginRight: 0,
-              color: "#5d5d5d",
-              backgroundColor: 'white',
-              fontSize: 16,
-              borderWidth: 0
-            }}>{this.state.autocomplete}</Text>
-          </TouchableHighlight>
+          <View style={{
+            width: screenWidth * .85,
+            position: `absolute`,
+            top: '10%',
+            zIndex: 100000,
+            alignSelf: `center`,
+          }}>
+            <TouchableHighlight
+              style={{
+                width: screenWidth * .85,
+                shadowColor: `black`,
+                shadowOffset: { width: 5, height: 5 },
+                shadowRadius: 10,
+                shadowOpacity: .5
+              }}
+              onPress={() => {
+                this.setModalVisible(true);
+              }}>
+              <Text style={{
+                padding: 10,
+                marginLeft: 0,
+                marginRight: 0,
+                color: "#5d5d5d",
+                backgroundColor: 'white',
+                fontSize: 16,
+                borderWidth: 0
+              }}>{this.state.autocomplete}</Text>
+            </TouchableHighlight>
+            {(this.state.autocomplete.startsWith(`Where do you`) && !this.state.newTime) && <MaterialIcons name='access-time' size={20} style={styles.icon} color='#5d5d5d' />}
+            {(this.state.autocomplete.startsWith(`Where do you`) && !this.state.newTime) && <Text style={styles.line}>|</Text>}
+            {(this.state.autocomplete.startsWith(`Where do you`) && !this.state.newTime) && <Text style={styles.timeStamp}>1 hour</Text>}
+          </View>
           <MapView
             style={{ flex: 1 }}
             key={this.state.key}
@@ -236,20 +286,12 @@ class HomePark extends Component {
                 longitude: this.state.targLng
               }} />
           </MapView>
-          <View
-            style={{
-              flex: 0,
-              justifyContent: `center`,
-              alignItems: `center`,
-              backgroundColor: "black"
-            }}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.handleSubmit.bind(this)}>
-              <Text>Submit</Text>
-            </TouchableOpacity>
-          </View>
         </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.handleSubmit.bind(this)}>
+          <Text style={{ color: `white`, fontWeight: `600`, fontSize: 16 }}>Submit</Text>
+        </TouchableOpacity>
       </Container>
     );
   }
@@ -257,14 +299,36 @@ class HomePark extends Component {
 
 const styles = StyleSheet.create({
   button: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 50,
     justifyContent: `center`,
     alignItems: `center`,
-    height: 40,
-    margin: 9,
-    width: 200,
-    borderRadius: 5,
-    backgroundColor: `lightgrey`
+    backgroundColor: "#59B1B2",
+    zIndex: 100,
   },
+  icon: {
+    position: 'absolute',
+    right: 0,
+    marginRight: 10,
+    marginTop: 10
+  },
+  line: {
+    position: `absolute`,
+    right: 0,
+    marginRight: 87,
+    fontSize: 30,
+    color: `#cccccc`
+  },
+  timeStamp: {
+    position: `absolute`,
+    padding: 10,
+    fontSize: 16,
+    right: 0,
+    marginRight: 25,
+    color: `#5d5d5d`
+  }
 });
 
 const mapStateToProps = state => {

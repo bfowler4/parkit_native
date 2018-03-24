@@ -7,9 +7,11 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
+  TouchableHighlight,
   TouchableOpacity
 } from "react-native";
 import { Constants, MapView, Marker } from "expo";
+import { MaterialIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
@@ -48,11 +50,16 @@ class ReqPark extends Component {
     };
 
     this.mapView = null;
+    this.isMountedStill = false;
   }
+
   componentDidMount() {
+    this.isMountedStill = true;
     setTimeout(() => {
-      this.setState({ isReady: true });
-    }, 60000);
+      if (this.isMountedStill) {
+        this.setState({ isReady: true });
+      }
+    }, 100000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +87,10 @@ class ReqPark extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.isMountedStill = false;
+  }
+
   onReady = result => {
     this.mapView.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -96,11 +107,11 @@ class ReqPark extends Component {
   };
 
   render() {
-    
+
     this.props.navigation.state.params.state.chosenDate.getTime();
 
     if (!this.state.distance) {
-    
+
       return (
         <View
           style={{ flex: 1, justifyContent: `center`, alignItems: `center` }}
@@ -114,16 +125,16 @@ class ReqPark extends Component {
       latitude: this.props.space.latitude,
       longitude: this.props.space.longitude
     };
-    
-    
+
+
     let customer = {
-      latitude:this.props.customer.latitude,
-      longitude:this.props.customer.longitude
+      latitude: this.props.customer.latitude,
+      longitude: this.props.customer.longitude
     }
- 
-    if(this.state.distance.data.rows[0].elements[0].status === "ZERO_RESULTS"){
-      return  <View>
-        { Alert.alert(
+
+    if (this.state.distance.data.rows[0].elements[0].status === "ZERO_RESULTS") {
+      return <View>
+        {Alert.alert(
           "Error",
           "No Stalls In Range",
           [
@@ -131,21 +142,21 @@ class ReqPark extends Component {
               text: "Home",
               onPress: () => {
                 this.props.navigation.navigate(`ParkHome`);
-                
+
               }
             }
           ],
           { cancelable: false }
         )}
       </View>
-      }
+    }
     let distanceMiles = this.state.distance.data.rows[0].elements[0].distance
       .text;
-   
+
     let duration = parseInt(
       this.state.distance.data.rows[0].elements[0].duration.text.match(/\d+/)[0]
     );
-    
+
     let convertUnix = (duration + 5) * 60 * 1000;
 
     let start_time = new Date().getTime() + convertUnix;
@@ -159,21 +170,43 @@ class ReqPark extends Component {
     let space_id = this.props.space.id;
     let time_requested = new Date().getTime();
 
-    
 
     return (
       <Container navigation={this.props.navigation}>
+        <View style={{
+          position: `absolute`,
+          top: '5%',
+          zIndex: 100000,
+          alignSelf: `center`
+        }}>
+          <Ionicons name='ios-car' size={20} style={styles.icon} color='#5d5d5d' />
+          <TouchableHighlight
+            style={{
+              shadowColor: `black`,
+              shadowOffset: { width: 5, height: 5 },
+              shadowRadius: 10,
+              shadowOpacity: .5
+            }}>
+            <Text style={{
+              padding: 10,
+              paddingLeft: 35,
+              color: "#5d5d5d",
+              backgroundColor: 'white',
+              fontSize: 16,
+              borderWidth: 0
+            }}>{`${duration} mins. - ${distanceMiles}`}</Text>
+          </TouchableHighlight>
+        </View>
         <View style={styles.container}>
           {this.state.isReady
             ? Alert.alert(
               "Timed Out",
-              "Sorrry caaaaaaaz",
+              "Sorry, space expired",
               [
                 {
-                  text: "Parking Page",
+                  text: "Find a space",
                   onPress: () => {
                     this.props.navigation.navigate(`ParkHome`);
-                    this.setState({ isReady: null });
                   }
                 }
               ],
@@ -189,6 +222,7 @@ class ReqPark extends Component {
             }}
             style={{ flex: 1 }}
             ref={c => (this.mapView = c)}
+            showsUserLocation={true}
           >
             {this.state.coordinates.length === 2 && (
               <MapViewDirections
@@ -196,7 +230,7 @@ class ReqPark extends Component {
                 destination={customer}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
-                strokeColor="hotpink"
+                strokeColor="#59B1B2"
                 onReady={this.onReady}
                 onError={this.onError}
               />
@@ -207,46 +241,35 @@ class ReqPark extends Component {
           </MapView>
           <View
             style={{
-              flex: 0.4,
-              justifyContent: "center",
+              flex: 0.3,
+              flexDirection: `row`,
               alignItems: "center",
               backgroundColor: "black"
             }}>
-            <View style={{ alignSelf: `flex-start`, paddingLeft: 20 }}>
-              <Text style={styles.text}>
-                {`${duration} minutes to destination, ${distanceMiles}`}
-              </Text>
-              <Text style={styles.text}>
-          {`Start Time: ${formattedStartTime}`}
-              </Text>
-              <Text style={styles.text}>
-                {`End Time: ${formattedEndTime}`}
-              </Text>
-              <Text style={styles.text}>
-                {`Duration: ${reservationDuration}`}
-              </Text>
-              <Text style={styles.text}>
-                {`Price: ${price}`}
-              </Text>
+            <View style={{ flex: 1, flexDirection: `row`, height: `100%`, marginBottom: 80, alignItems: `center`, paddingTop: 20 }}>
+              <MaterialIcons name='access-time' size={38} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 10 }}>{`${formattedStartTime} - ${formattedEndTime}`}</Text>
+              <FontAwesome name='credit-card-alt' size={30} style={styles.labelIcon} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 15 }}>{`${price}`}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                this.props.reserveSpace(
-                  space_id,
-                  time_requested,
-                  start_time,
-                  end_time
-                );
-                this.props.navigation.navigate("ConfirmPark");
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                Submit
-                </Text>
-            </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            this.props.reserveSpace(
+              space_id,
+              time_requested,
+              start_time,
+              end_time
+            );
+            this.props.navigation.navigate("ConfirmPark");
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Confirm Reservation
+          </Text>
+        </TouchableOpacity>
       </Container >
     );
   }
@@ -257,22 +280,35 @@ const styles = StyleSheet.create({
     flex: 1
   },
   button: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 50,
     justifyContent: `center`,
+    backgroundColor: "#59B1B2",
     alignItems: `center`,
-    height: 40,
-    margin: 9,
-    width: 200,
-    borderColor: `black`,
-    borderWidth: 1,
-    borderStyle: `solid`,
-    borderRadius: 5,
-    backgroundColor: "#7fbcac",
     zIndex: 100,
-    alignSelf: "center"
   },
   text: {
-    color: "lightgrey",
+    color: "white",
     fontWeight: "bold"
+  },
+  timeHeader: {
+    flexDirection: `row`,
+    width: `100%`,
+    backgroundColor: `black`,
+    borderTopWidth: 1,
+    borderTopColor: `white`,
+  },
+  icon: {
+    position: `absolute`,
+    paddingTop: 10,
+    paddingLeft: 10,
+    zIndex: 1000000
+  },
+  labelIcon: {
+    paddingTop: 15,
+    paddingLeft: 30
   }
 });
 

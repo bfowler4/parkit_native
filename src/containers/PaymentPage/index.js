@@ -88,6 +88,9 @@ class PaymentPage extends Component {
                 value={this.state.expiration}
                 keyboardType='numeric'
                 maxLength={5}
+                ref={component => {
+                  console.log(`in ref thing`);
+                }}
                 onChangeText={date => {
                   const length = date.length;
                   if (length < this.state.expiration.length) {
@@ -109,6 +112,7 @@ class PaymentPage extends Component {
                 value={this.state.cvv}
                 keyboardType='numeric'
                 maxLength={this.state.cardNumber.startsWith(`3`) ? 4 : 3}
+                ref='thirdInput'
                 onChangeText={number => this.setState({ cvv: number })} />
             </View>
           </View>
@@ -118,6 +122,7 @@ class PaymentPage extends Component {
               value={this.state.zipcode}
               keyboardType='numeric'
               maxLength={5}
+              ref='fourthInput'
               onChangeText={number => this.setState({ zipcode: number })} />
           </View>
         </View>

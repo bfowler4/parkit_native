@@ -8,13 +8,6 @@ class HomePage extends Component {
     super(props);
   }
 
-  static navigationOptions = {
-    drawerIcon: (
-      <Image source={require('../../.././assetts/Home.png')}
-        style={{ height: 24, width: 24 }} />
-    )
-  }
-
   render() {
     return (
       <Container navigation={this.props.navigation}>
@@ -29,14 +22,13 @@ class HomePage extends Component {
           <TouchableOpacity
             style={styles.button2}
             onPress={() => this.props.navigation.navigate(`Register`)}>
-            <Text style={{ color: `black` }}>Sign Up</Text>
+            <Text style={{ color: `white` }}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </Container>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -63,11 +55,11 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 10,
     width: 200,
-    borderColor: `lightgrey`,
-    backgroundColor: `lightgrey`,
+    backgroundColor: `#59B1B2`,
     borderWidth: 1,
     borderStyle: `solid`,
     borderRadius: 5
   }
 });
+
 export default HomePage;

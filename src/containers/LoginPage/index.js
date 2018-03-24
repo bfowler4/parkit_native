@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Image, KeyboardAvoidingView, Dimensions } from 'react-native';
 import { FontAwesome, Entypo } from '@expo/vector-icons';
 
 import Container from '../../components/container';
@@ -18,12 +18,6 @@ class LoginPage extends Component {
     }
   }
 
-  static navigationOptions = {
-    drawerIcon: (
-      <Image source={require('../../.././assetts/Login.png')}
-        style={{ height: 24, width: 24 }} />
-    )
-  }
   handleSubmit() {
     const {
       email,
@@ -37,6 +31,8 @@ class LoginPage extends Component {
       <Container navigation={this.props.navigation}>
         <View style={styles.container}>
           <KeyboardAvoidingView style={styles.container} behavior='padding'>
+            <Image source={require('../../../assetts/ParkItHomePage.png')}
+              style={{ height: Dimensions.get(`screen`).height, width: Dimensions.get(`screen`).width, zIndex: -1, position: `absolute`, bottom: 25 }} />
             <View style={styles.inputSection}>
               <FontAwesome name='user' size={20} style={styles.icon} color='black' />
               <TextInput
@@ -58,7 +54,7 @@ class LoginPage extends Component {
             <TouchableOpacity
               style={styles.button}
               onPress={this.handleSubmit.bind(this)}>
-              <Text style={{ color: `lightgrey` }}>Login</Text>
+              <Text style={{ color: `white` }}>Login</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
@@ -115,11 +111,12 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: `center`,
     alignItems: `center`,
+    marginTop: 10,
     height: 40,
     width: 200,
     borderWidth: 1,
     borderStyle: `solid`,
-    borderColor: `lightgrey`,
+    backgroundColor: `#59B1B2`,
     borderRadius: 5
   }
 });
