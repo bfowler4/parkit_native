@@ -7,10 +7,11 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
+  TouchableHighlight,
   TouchableOpacity
 } from "react-native";
 import { Constants, MapView, Marker } from "expo";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { connect } from "react-redux";
 import geolib from "geolib";
 import MapViewDirections from "../../utilities/MapViewDirections";
@@ -58,7 +59,7 @@ class ReqPark extends Component {
       if (this.isMountedStill) {
         this.setState({ isReady: true });
       }
-    }, 60000);
+    }, 100000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -172,18 +173,38 @@ class ReqPark extends Component {
 
     return (
       <Container navigation={this.props.navigation}>
-        <View style={styles.timeHeader}>
-          <MaterialIcons name='access-time' size={20} style={styles.icon} color='#59B1B2' />
-          <Text style={{ padding: 15, color: `white` }}>{formattedStartTime} - {formattedEndTime}</Text>
+        <View style={{
+          position: `absolute`,
+          top: '5%',
+          zIndex: 100000,
+          alignSelf: `center`
+        }}>
+          <Ionicons name='ios-car' size={20} style={styles.icon} color='#5d5d5d' />
+          <TouchableHighlight
+            style={{
+              shadowColor: `black`,
+              shadowOffset: { width: 5, height: 5 },
+              shadowRadius: 10,
+              shadowOpacity: .5
+            }}>
+            <Text style={{
+              padding: 10,
+              paddingLeft: 35,
+              color: "#5d5d5d",
+              backgroundColor: 'white',
+              fontSize: 16,
+              borderWidth: 0
+            }}>{`${duration} mins. - ${distanceMiles}`}</Text>
+          </TouchableHighlight>
         </View>
         <View style={styles.container}>
           {this.state.isReady
             ? Alert.alert(
               "Timed Out",
-              "Sorrry caaaaaaaz",
+              "Sorry, space expired",
               [
                 {
-                  text: "Parking Page",
+                  text: "Find a space",
                   onPress: () => {
                     this.props.navigation.navigate(`ParkHome`);
                   }
@@ -221,19 +242,15 @@ class ReqPark extends Component {
           <View
             style={{
               flex: 0.3,
+              flexDirection: `row`,
               alignItems: "center",
               backgroundColor: "black"
             }}>
-            <View style={{ alignSelf: `flex-start`, paddingLeft: 20, paddingTop: 20 }}>
-              <Text style={styles.text}>
-                {`${duration} minutes to destination, ${distanceMiles}`}
-              </Text>
-              <Text style={styles.text}>
-                {`Duration: ${reservationDuration}`}
-              </Text>
-              <Text style={styles.text}>
-                {`Price: ${price}`}
-              </Text>
+            <View style={{ flex: 1, flexDirection: `row`, height: `100%`, marginBottom: 80, alignItems: `center`, paddingTop: 20 }}>
+              <MaterialIcons name='access-time' size={38} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 10 }}>{`${formattedStartTime} - ${formattedEndTime}`}</Text>
+              <FontAwesome name='credit-card-alt' size={30} style={styles.labelIcon} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 15 }}>{`${price}`}</Text>
             </View>
           </View>
         </View>
@@ -250,8 +267,8 @@ class ReqPark extends Component {
           }}
         >
           <Text style={{ color: "white", fontWeight: "bold" }}>
-            Reserve
-                </Text>
+            Confirm Reservation
+          </Text>
         </TouchableOpacity>
       </Container >
     );
@@ -268,8 +285,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     justifyContent: `center`,
-    alignItems: `center`,
     backgroundColor: "#59B1B2",
+    alignItems: `center`,
     zIndex: 100,
   },
   text: {
@@ -284,8 +301,14 @@ const styles = StyleSheet.create({
     borderTopColor: `white`,
   },
   icon: {
-    paddingVertical: 13,
-    paddingLeft: 15
+    position: `absolute`,
+    paddingTop: 10,
+    paddingLeft: 10,
+    zIndex: 1000000
+  },
+  labelIcon: {
+    paddingTop: 15,
+    paddingLeft: 30
   }
 });
 
