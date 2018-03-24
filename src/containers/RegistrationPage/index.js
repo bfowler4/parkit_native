@@ -9,10 +9,6 @@ import { register } from '../../actions/authentication';
 
 class RegistrationPage extends Component {
   static navigationOptions = {
-    drawerIcon: (
-      <Image source={require('../../.././assetts/register2.png')}
-        style={{ height: 24, width: 24 }} />
-    ),
     drawerLabel: () => `Sign Up`
   }
 

@@ -8,13 +8,6 @@ class HomePage extends Component {
     super(props);
   }
 
-  static navigationOptions = {
-    drawerIcon: (
-      <Image source={require('../../.././assetts/Home.png')}
-        style={{ height: 24, width: 24 }} />
-    )
-  }
-
   render() {
     return (
       <Container navigation={this.props.navigation}>

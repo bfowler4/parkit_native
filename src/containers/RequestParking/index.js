@@ -230,7 +230,7 @@ class ReqPark extends Component {
                 destination={customer}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
-                strokeColor="hotpink"
+                strokeColor="#59B1B2"
                 onReady={this.onReady}
                 onError={this.onError}
               />
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 40,
+    height: 50,
     justifyContent: `center`,
     backgroundColor: "#59B1B2",
     alignItems: `center`,

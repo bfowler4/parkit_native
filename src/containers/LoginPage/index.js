@@ -18,12 +18,6 @@ class LoginPage extends Component {
     }
   }
 
-  static navigationOptions = {
-    drawerIcon: (
-      <Image source={require('../../.././assetts/Login.png')}
-        style={{ height: 24, width: 24 }} />
-    )
-  }
   handleSubmit() {
     const {
       email,

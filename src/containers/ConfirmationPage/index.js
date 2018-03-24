@@ -129,6 +129,7 @@ class ConfirmPark extends Component {
             }}
             style={{ flex: 1 }}
             ref={c => (this.mapView = c)}
+            showsUserLocation={true}
           >
             {this.state.coordinates.length === 2 && (
               <MapViewDirections
@@ -136,7 +137,7 @@ class ConfirmPark extends Component {
                 destination={customer}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
-                strokeColor="hotpink"
+                strokeColor="#59B1B2"
                 onReady={this.onReady}
                 onError={this.onError}
               />
