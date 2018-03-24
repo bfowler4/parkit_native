@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Constants, MapView, Marker } from "expo";
+import { MaterialIcons, Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import Axios from "axios";
 import { connect } from "react-redux";
 import geolib from "geolib";
@@ -52,7 +53,7 @@ class ConfirmPark extends Component {
         latitude: this.props.space.latitude,
         longitude: this.props.space.longitude
       };
-    
+
       let customer = {
         latitude: this.props.customer.latitude,
         longitude: this.props.customer.longitude
@@ -96,26 +97,23 @@ class ConfirmPark extends Component {
         </View>
       );
     }
- 
 
     let space = {
       latitude: this.props.space.latitude,
       longitude: this.props.space.longitude
     };
-
     let customer = {
-      latitude: this.props.customer.latitude?this.props.customer.latitude:this.props.customer.coords.latitude,
-      longitude: this.props.customer.longitude?this.props.customer.longitude:this.props.customer.coords.longitude
+      latitude: this.props.customer.latitude ? this.props.customer.latitude : this.props.customer.coords.latitude,
+      longitude: this.props.customer.longitude ? this.props.customer.longitude : this.props.customer.coords.longitude
     };
-    
-
     let startTime = new Date(
       this.props.reservation.reservedStall.start_time
-    ).toLocaleTimeString();
-    
+    ).toLocaleTimeString().split(` `);
+    startTime = `${startTime[0].slice(0, -3)} ${startTime[1]}`;
     let endTime = new Date(
       this.props.reservation.reservedStall.end_time
-    ).toLocaleTimeString();
+    ).toLocaleTimeString().split(` `);
+    endTime = `${endTime[0].slice(0, -3)} ${endTime[1]}`;
     let address = this.props.address.space.address;
     let description = this.props.space.description;
     let price = this.props.address.price;
@@ -147,14 +145,20 @@ class ConfirmPark extends Component {
             <MapView.Marker coordinate={customer} />
             <MapView.Marker coordinate={space} />
           </MapView>
-          <View style={{ flex: 0.5, justifyContent: 'center', alignContent: 'center', backgroundColor: 'black' }}>
-            <View style={{ flex: 0.8, justifyContent: 'center', alignContent: 'center', backgroundColor: 'white', borderRadius: 10 }}>
-
-              <Text>{`Price: ${price}`}</Text>
-              <Text>{`start time:${startTime} end time:${endTime}`}</Text>
-              <Text>{`${address.street} ${address.city} ${address.state}`}</Text>
-              <Text>{`Instructions: ${description}`}</Text>
-
+          <View style={{ flex: 0.5, justifyContent: 'flex-start', alignContent: 'center', backgroundColor: 'black' }}>
+            <View style={{ flexDirection: `row`, alignItems: `center` }}>
+              <MaterialIcons name='access-time' size={38} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 10 }}>{`${startTime} - ${endTime}`}</Text>
+              <FontAwesome name='credit-card-alt' size={30} style={styles.labelIcon} color='#59B1B2' />
+              <Text style={{ color: `white`, fontWeight: `bold`, fontSize: 16, paddingTop: 15, paddingLeft: 15 }}>{`$${price}`}</Text>
+            </View>
+            <View style={{ flexDirection: `row`, alignItems: `center`, width: `85%` }}>
+              <Entypo name='location-pin' size={30} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
+              <Text style={{ color: `white`, paddingLeft: 20, paddingTop: 10, fontSize: 16 }}>{`${address.street} ${address.city} ${address.state}`}</Text>
+            </View>
+            <View style={{ flexDirection: `row`, alignItems: `center`, width: `85%` }}>
+              <Entypo name='info' size={30} style={{ paddingTop: 15, paddingLeft: 20 }} color='#59B1B2' />
+              <Text style={{ color: `white`, paddingLeft: 20, paddingTop: 10, fontSize: 16 }}>{`Park on the left side of the driveway. Be careful, we have a dog!`}</Text>
             </View>
           </View>
         </View>
@@ -170,6 +174,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "#ecf0f1"
+  },
+  labelIcon: {
+    paddingTop: 15,
+    paddingLeft: 30
   }
 });
 
